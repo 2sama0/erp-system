@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العملاء المحتملين - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المبيعات</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">القائمة الرئيسية</h4>
+                <ul>
+                    <li class="menu-item"><a href="dashboard.html"><i class="fas fa-home"></i><span>لوحة التحكم</span></a></li>
+                    <li class="menu-item"><a href="sales.html"><i class="fas fa-shopping-cart"></i><span>إدارة المبيعات</span></a></li>
+                    <li class="menu-item"><a href="inventory.html"><i class="fas fa-warehouse"></i><span>إدارة المخزون</span></a></li>
+                    <li class="menu-item active"><a href="customers.html"><i class="fas fa-users"></i><span>إدارة العملاء</span></a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">العملاء المحتملين</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>العملاء المحتملين</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate"></span>
+                </div>
+                <button class="btn btn-primary" onclick="openNewLeadModal()">
+                    <i class="fas fa-plus"></i>
+                    عميل محتمل جديد
+                </button>
+            </div>
+        </header>
+
+        <div class="page-tabs">
+            <a href="customers.html" class="tab-btn">العملاء</a>
+            <a href="customersleads.html" class="tab-btn active">العملاء المحتملين</a>
+            <a href="customersgroups.html" class="tab-btn">مجموعات العملاء</a>
+            <a href="customerscommunications.html" class="tab-btn">الاتصالات</a>
+            <a href="customersreports.html" class="tab-btn">تقارير العملاء</a>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>قائمة العملاء المحتملين</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table" id="leadsTable">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>الهاتف</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>المصدر</th>
+                                <th>الاهتمام</th>
+                                <th>الحالة</th>
+                                <th>المسؤول</th>
+                                <th>المتابعة القادمة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملؤه بواسطة JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- مودال عميل محتمل جديد -->
+        <div class="modal-overlay" id="leadModal" style="display: none;">
+            <div class="modal-container modal-lg">
+                <div class="modal-header">
+                    <h3>عميل محتمل جديد</h3>
+                    <button class="modal-close" onclick="closeLeadModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="leadForm" onsubmit="saveLead(event)">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>الاسم <span class="required">*</span></label>
+                                    <input type="text" class="form-control" id="leadName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>رقم الهاتف <span class="required">*</span></label>
+                                    <input type="tel" class="form-control" id="leadPhone" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>البريد الإلكتروني</label>
+                                    <input type="email" class="form-control" id="leadEmail">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>المصدر</label>
+                                    <select class="form-control" id="leadSource">
+                                        <option value="walkin">زيارة المعرض</option>
+                                        <option value="referral">توصية</option>
+                                        <option value="social_media">وسائل التواصل</option>
+                                        <option value="website">الموقع الإلكتروني</option>
+                                        <option value="advertisement">إعلان</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>الاهتمام</label>
+                            <input type="text" class="form-control" id="leadInterest" placeholder="مثال: سيارة تويوتا كامري">
+                        </div>
+                        <div class="form-group">
+                            <label>ملاحظات</label>
+                            <textarea class="form-control" id="leadNotes" rows="4"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" onclick="closeLeadModal()">إلغاء</button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/customersleads.js"></script>
+</body>
+</html>

@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- معلومات المستخدم -->
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير النظام</span>
+            </div>
+        </div>
+
+        <!-- القائمة الرئيسية -->
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">القائمة الرئيسية</h4>
+                <ul>
+                    <li class="menu-item active">
+                        <a href="dashboard.html">
+                            <i class="fas fa-home"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="sales.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>إدارة المبيعات</span>
+                            <span class="menu-badge">5</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="inventory.html">
+                            <i class="fas fa-warehouse"></i>
+                            <span>إدارة المخزون</span>
+                            <span class="menu-badge warning">3</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="customers.html">
+                            <i class="fas fa-users"></i>
+                            <span>إدارة العملاء</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h4 class="section-title">المشتريات والموردين</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="purchases.html">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>إدارة المشتريات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="suppliers.html">
+                            <i class="fas fa-truck"></i>
+                            <span>إدارة الموردين</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="invoices.html">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>الفواتير</span>
+                            <span class="menu-badge">12</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h4 class="section-title">النظام المحاسبي</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="accounting.html">
+                            <i class="fas fa-calculator"></i>
+                            <span>الحسابات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="payments.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>الدفعات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="expenses.html">
+                            <i class="fas fa-receipt"></i>
+                            <span>المصروفات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="reports.html">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>التقارير المالية</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h4 class="section-title">الإعدادات والدعم</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="users.html">
+                            <i class="fas fa-user-cog"></i>
+                            <span>إدارة المستخدمين</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="settings.html">
+                            <i class="fas fa-cog"></i>
+                            <span>إعدادات النظام</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="help.html">
+                            <i class="fas fa-question-circle"></i>
+                            <span>المساعدة والدعم</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- الإحصائيات السريعة -->
+        <div class="sidebar-stats">
+            <div class="stat-item">
+                <i class="fas fa-chart-line"></i>
+                <div>
+                    <span class="stat-value" id="dailySales">25,430</span>
+                    <span class="stat-label">مبيعات اليوم</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-boxes"></i>
+                <div>
+                    <span class="stat-value" id="lowStock">3</span>
+                    <span class="stat-label">منتجات منخفضة</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- خروج -->
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- شريط التنقل العلوي -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title" id="pageTitle">لوحة التحكم الرئيسية</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>لوحة التحكم</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <!-- البحث -->
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="ابحث في النظام..." id="globalSearch">
+                </div>
+
+                <!-- الإشعارات -->
+                <div class="notifications">
+                    <button class="notification-btn" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </button>
+                    <div class="notification-dropdown" id="notificationDropdown">
+                        <div class="notification-header">
+                            <h3>الإشعارات</h3>
+                            <button class="mark-all-read">تعليم الكل كمقروء</button>
+                        </div>
+                        <div class="notification-list">
+                            <div class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p>طلب بيع جديد #ORD-2024-0015</p>
+                                    <span class="notification-time">منذ 5 دقائق</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p>سيارة BMW X5 مخزونها منخفض</p>
+                                    <span class="notification-time">منذ ساعة</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p>دفعة مستحقة للمورد السيارات المتميز</p>
+                                    <span class="notification-time">منذ يوم</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notification-footer">
+                            <a href="notifications.html">عرض جميع الإشعارات</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- التقويم -->
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate">الاثنين، 15 يناير 2024</span>
+                    <span id="currentTime">10:30 صباحاً</span>
+                </div>
+
+                <!-- اختصار الإجراءات السريعة -->
+                <div class="quick-actions-dropdown">
+                    <button class="quick-actions-btn">
+                        <i class="fas fa-plus"></i>
+                        إجراء سريع
+                    </button>
+                    <div class="quick-actions-menu">
+                        <a href="new-sale.html" class="action-item">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>بيع جديد</span>
+                        </a>
+                        <a href="new-purchase.html" class="action-item">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>شراء جديد</span>
+                        </a>
+                        <a href="new-customer.html" class="action-item">
+                            <i class="fas fa-user-plus"></i>
+                            <span>عميل جديد</span>
+                        </a>
+                        <a href="new-payment.html" class="action-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>تسجيل دفعة</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- محتوى الصفحة -->
+        <div class="content-wrapper">
+            <!-- الإحصائيات السريعة -->
+            <div class="stats-cards">
+                <div class="stats-row">
+                    <!-- بطاقة إجمالي المبيعات -->
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 class="stat-title">إجمالي المبيعات</h3>
+                            <p class="stat-value">2,450,000 <span>ر.س</span></p>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +12.5% عن الشهر الماضي
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- بطاقة إجمالي المشتريات -->
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 class="stat-title">إجمالي المشتريات</h3>
+                            <p class="stat-value">1,850,000 <span>ر.س</span></p>
+                            <p class="stat-change negative">
+                                <i class="fas fa-arrow-down"></i>
+                                -5.3% عن الشهر الماضي
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- بطاقة العملاء الجدد -->
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 class="stat-title">العملاء الجدد</h3>
+                            <p class="stat-value">48</p>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +8 عملاء هذا الأسبوع
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- بطاقة المنتجات المنخفضة -->
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 class="stat-title">منتجات منخفضة</h3>
+                            <p class="stat-value">3</p>
+                            <p class="stat-change">
+                                تحتاج لإعادة طلب
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- بطاقات إضافية -->
+                <div class="stats-row">
+                    <!-- بطاقة طلبات التمويل -->
+                    <div class="stat-card info">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 class="stat-title">طلبات التمويل</h3>
+                            <p class="stat-value">7</p>
+                            <p class="stat-change">
+                                3 تحت المراجعة
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- بطاقة رضا العملاء -->
+                    <div class="stat-card purple">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 class="stat-title">رضا العملاء</h3>
+                            <p class="stat-value">94%</p>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +2% عن الربع الماضي
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- بطاقة الأرباح الشهرية -->
+                    <div class="stat-card teal">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 class="stat-title">صافي الربح</h3>
+                            <p class="stat-value">600,000 <span>ر.س</span></p>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +18.2% عن الشهر الماضي
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- بطاقة الهامش الربحي -->
+                    <div class="stat-card orange">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 class="stat-title">الهامش الربحي</h3>
+                            <p class="stat-value">24.5%</p>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +1.8% عن الشهر الماضي
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المخططات والرسوم البيانية -->
+            <div class="charts-section">
+                <div class="chart-row">
+                    <!-- مخطط المبيعات الشهرية -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>المبيعات الشهرية</h3>
+                            <select class="chart-filter">
+                                <option value="month">هذا الشهر</option>
+                                <option value="quarter">هذا الربع</option>
+                                <option value="year">هذه السنة</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- مخطط توزيع المنتجات -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>توزيع المبيعات حسب النوع</h3>
+                            <select class="chart-filter">
+                                <option value="month">هذا الشهر</option>
+                                <option value="quarter">هذا الربع</option>
+                                <option value="year">هذه السنة</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="productDistributionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-row">
+                    <!-- مخطط التدفق النقدي -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>التدفق النقدي</h3>
+                            <select class="chart-filter">
+                                <option value="week">هذا الأسبوع</option>
+                                <option value="month">هذا الشهر</option>
+                                <option value="quarter">هذا الربع</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="cashFlowChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- مخطط أفضل العملاء -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>أفضل 5 عملاء</h3>
+                            <select class="chart-filter">
+                                <option value="month">هذا الشهر</option>
+                                <option value="quarter">هذا الربع</option>
+                                <option value="year">هذه السنة</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="topCustomersChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الجداول والعناصر الأخرى -->
+            <div class="tables-section">
+                <div class="table-row">
+                    <!-- أحدث الطلبات -->
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>أحدث طلبات البيع</h3>
+                            <a href="sales.html" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الطلب</th>
+                                        <th>العميل</th>
+                                        <th>التاريخ</th>
+                                        <th>المبلغ</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#ORD-2024-0015</td>
+                                        <td>محمد أحمد</td>
+                                        <td>2024-01-15</td>
+                                        <td>250,000 ر.س</td>
+                                        <td><span class="status-badge completed">مكتمل</span></td>
+                                        <td>
+                                            <button class="action-btn view" title="عرض">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn print" title="طباعة">
+                                                <i class="fas fa-print"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-2024-0014</td>
+                                        <td>شركة النجاح</td>
+                                        <td>2024-01-14</td>
+                                        <td>180,000 ر.س</td>
+                                        <td><span class="status-badge pending">قيد التنفيذ</span></td>
+                                        <td>
+                                            <button class="action-btn view" title="عرض">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn edit" title="تعديل">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-2024-0013</td>
+                                        <td>عبدالله سعيد</td>
+                                        <td>2024-01-13</td>
+                                        <td>320,000 ر.س</td>
+                                        <td><span class="status-badge financing">تمويل</span></td>
+                                        <td>
+                                            <button class="action-btn view" title="عرض">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn track" title="متابعة">
+                                                <i class="fas fa-truck"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-2024-0012</td>
+                                        <td>فهد خالد</td>
+                                        <td>2024-01-12</td>
+                                        <td>95,000 ر.س</td>
+                                        <td><span class="status-badge pending">معلق</span></td>
+                                        <td>
+                                            <button class="action-btn view" title="عرض">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn approve" title="موافقة">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#ORD-2024-0011</td>
+                                        <td>أحمد محمد</td>
+                                        <td>2024-01-11</td>
+                                        <td>450,000 ر.س</td>
+                                        <td><span class="status-badge cancelled">ملغي</span></td>
+                                        <td>
+                                            <button class="action-btn view" title="عرض">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn restore" title="استعادة">
+                                                <i class="fas fa-undo"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- المنتجات المنخفضة -->
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>المنتجات المنخفضة في المخزون</h3>
+                            <a href="inventory.html" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>المنتج</th>
+                                        <th>النوع</th>
+                                        <th>المخزون</th>
+                                        <th>الحد الأدنى</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>سيارة BMW X5 2024</td>
+                                        <td>سيارة</td>
+                                        <td>2</td>
+                                        <td>5</td>
+                                        <td><span class="status-badge danger">منخفض جداً</span></td>
+                                        <td>
+                                            <button class="action-btn order">طلب شراء</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>إطار 18 بوصة - بريدجستون</td>
+                                        <td>اكسسوار</td>
+                                        <td>3</td>
+                                        <td>10</td>
+                                        <td><span class="status-badge warning">منخفض</span></td>
+                                        <td>
+                                            <button class="action-btn order">طلب شراء</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>سيارة مرسيدس GLC 2024</td>
+                                        <td>سيارة</td>
+                                        <td>4</td>
+                                        <td>6</td>
+                                        <td><span class="status-badge warning">منخفض</span></td>
+                                        <td>
+                                            <button class="action-btn order">طلب شراء</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>زيت محرك 5W-30</td>
+                                        <td>اكسسوار</td>
+                                        <td>5</td>
+                                        <td>15</td>
+                                        <td><span class="status-badge warning">منخفض</span></td>
+                                        <td>
+                                            <button class="action-btn order">طلب شراء</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>سيارة تويوتا كامري 2024</td>
+                                        <td>سيارة</td>
+                                        <td>6</td>
+                                        <td>8</td>
+                                        <td><span class="status-badge info">مقبول</span></td>
+                                        <td>
+                                            <button class="action-btn monitor">مراقبة</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-row">
+                    <!-- أحدث الدفعات -->
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>آخر الدفعات</h3>
+                            <a href="payments.html" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الدفعة</th>
+                                        <th>النوع</th>
+                                        <th>الطرف</th>
+                                        <th>المبلغ</th>
+                                        <th>التاريخ</th>
+                                        <th>الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#PAY-2024-0056</td>
+                                        <td><span class="type-receipt">قبض</span></td>
+                                        <td>محمد أحمد</td>
+                                        <td>50,000 ر.س</td>
+                                        <td>2024-01-15</td>
+                                        <td><span class="status-badge completed">مكتمل</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PAY-2024-0055</td>
+                                        <td><span class="type-payment">دفع</span></td>
+                                        <td>مورد السيارات</td>
+                                        <td>120,000 ر.س</td>
+                                        <td>2024-01-14</td>
+                                        <td><span class="status-badge pending">معلق</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PAY-2024-0054</td>
+                                        <td><span class="type-receipt">قبض</span></td>
+                                        <td>شركة النجاح</td>
+                                        <td>75,000 ر.س</td>
+                                        <td>2024-01-13</td>
+                                        <td><span class="status-badge completed">مكتمل</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PAY-2024-0053</td>
+                                        <td><span class="type-receipt">قبض</span></td>
+                                        <td>عبدالله سعيد</td>
+                                        <td>30,000 ر.س</td>
+                                        <td>2024-01-12</td>
+                                        <td><span class="status-badge completed">مكتمل</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PAY-2024-0052</td>
+                                        <td><span class="type-payment">دفع</span></td>
+                                        <td>مورد الاكسسوارات</td>
+                                        <td>45,000 ر.س</td>
+                                        <td>2024-01-11</td>
+                                        <td><span class="status-badge completed">مكتمل</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- المهام القادمة -->
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>المهام والمتابعات</h3>
+                            <a href="tasks.html" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>المهمة</th>
+                                        <th>المسؤول</th>
+                                        <th>تاريخ الاستحقاق</th>
+                                        <th>الأولوية</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>متابعة تمويل طلب #ORD-2024-0013</td>
+                                        <td>أحمد السليم</td>
+                                        <td>2024-01-18</td>
+                                        <td><span class="priority-badge high">عالي</span></td>
+                                        <td><span class="status-badge pending">قيد العمل</span></td>
+                                        <td>
+                                            <button class="action-btn complete">إكمال</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>تسليم سيارة BMW X5 للعميل محمد</td>
+                                        <td>فهد خالد</td>
+                                        <td>2024-01-17</td>
+                                        <td><span class="priority-badge medium">متوسط</span></td>
+                                        <td><span class="status-badge pending">مخطط</span></td>
+                                        <td>
+                                            <button class="action-btn complete">إكمال</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>إعادة طلب BMW X5 من المورد</td>
+                                        <td>علي محمد</td>
+                                        <td>2024-01-16</td>
+                                        <td><span class="priority-badge high">عالي</span></td>
+                                        <td><span class="status-badge pending">معلق</span></td>
+                                        <td>
+                                            <button class="action-btn complete">إكمال</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>إعداد تقرير المبيعات الشهري</td>
+                                        <td>سارة أحمد</td>
+                                        <td>2024-01-20</td>
+                                        <td><span class="priority-badge low">منخفض</span></td>
+                                        <td><span class="status-badge pending">غير مبدأ</span></td>
+                                        <td>
+                                            <button class="action-btn start">بدء</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>مراجعة عقود الموردين</td>
+                                        <td>خالد محمد</td>
+                                        <td>2024-01-25</td>
+                                        <td><span class="priority-badge medium">متوسط</span></td>
+                                        <td><span class="status-badge pending">مخطط</span></td>
+                                        <td>
+                                            <button class="action-btn remind">تذكير</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- البطاقات الإضافية -->
+            <div class="additional-cards">
+                <!-- الإحصائيات السريعة -->
+                <div class="quick-stats-card">
+                    <div class="card-header">
+                        <h3>إحصائيات سريعة</h3>
+                        <select class="period-select">
+                            <option value="today">اليوم</option>
+                            <option value="week">هذا الأسبوع</option>
+                            <option value="month">هذا الشهر</option>
+                        </select>
+                    </div>
+                    <div class="quick-stats-grid">
+                        <div class="quick-stat">
+                            <div class="quick-stat-icon primary">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value">15</span>
+                                <span class="quick-stat-label">سيارة مباعة</span>
+                            </div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-icon success">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value">8</span>
+                                <span class="quick-stat-label">عملاء جدد</span>
+                            </div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-icon warning">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value">23</span>
+                                <span class="quick-stat-label">فواتير صادرة</span>
+                            </div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-icon danger">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="quick-stat-info">
+                                <span class="quick-stat-value">5</span>
+                                <span class="quick-stat-label">مهام متأخرة</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أفضل المنتجات مبيعاً -->
+                <div class="top-products-card">
+                    <div class="card-header">
+                        <h3>أفضل المنتجات مبيعاً</h3>
+                        <a href="reports.html" class="view-report">تقرير مفصل</a>
+                    </div>
+                    <div class="products-list">
+                        <div class="product-item">
+                            <div class="product-rank">1</div>
+                            <div class="product-info">
+                                <h4>Toyota Camry 2024</h4>
+                                <p class="product-sales">12 عملية بيع</p>
+                            </div>
+                            <div class="product-revenue">
+                                <span class="revenue-amount">1,440,000 ر.س</span>
+                                <span class="revenue-change positive">+15%</span>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-rank">2</div>
+                            <div class="product-info">
+                                <h4>BMW X5 2024</h4>
+                                <p class="product-sales">8 عمليات بيع</p>
+                            </div>
+                            <div class="product-revenue">
+                                <span class="revenue-amount">2,400,000 ر.س</span>
+                                <span class="revenue-change positive">+22%</span>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-rank">3</div>
+                            <div class="product-info">
+                                <h4>Mercedes GLC 2024</h4>
+                                <p class="product-sales">6 عمليات بيع</p>
+                            </div>
+                            <div class="product-revenue">
+                                <span class="revenue-amount">1,680,000 ر.س</span>
+                                <span class="revenue-change negative">-5%</span>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-rank">4</div>
+                            <div class="product-info">
+                                <h4>Hyundai Tucson 2024</h4>
+                                <p class="product-sales">5 عمليات بيع</p>
+                            </div>
+                            <div class="product-revenue">
+                                <span class="revenue-amount">625,000 ر.س</span>
+                                <span class="revenue-change positive">+8%</span>
+                            </div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-rank">5</div>
+                            <div class="product-info">
+                                <h4>Kia Sportage 2024</h4>
+                                <p class="product-sales">4 عمليات بيع</p>
+                            </div>
+                            <div class="product-revenue">
+                                <span class="revenue-amount">520,000 ر.س</span>
+                                <span class="revenue-change positive">+12%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- التقويم -->
+                <div class="calendar-card">
+                    <div class="card-header">
+                        <h3>تقويم الفعاليات</h3>
+                        <div class="calendar-nav">
+                            <button class="nav-btn prev"><i class="fas fa-chevron-right"></i></button>
+                            <span class="current-month">يناير 2024</span>
+                            <button class="nav-btn next"><i class="fas fa-chevron-left"></i></button>
+                        </div>
+                    </div>
+                    <div class="calendar-widget">
+                        <div class="calendar-grid" id="calendarGrid">
+                            <!-- سيتم ملؤه بالجافاسكريبت -->
+                        </div>
+                    </div>
+                    <div class="calendar-events">
+                        <h4>الفعاليات القادمة</h4>
+                        <div class="event-list">
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <span class="event-day">18</span>
+                                    <span class="event-month">يناير</span>
+                                </div>
+                                <div class="event-details">
+                                    <h5>اجتماع مع مورد جديد</h5>
+                                    <p>10:00 ص - 11:00 ص</p>
+                                </div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <span class="event-day">20</span>
+                                    <span class="event-month">يناير</span>
+                                </div>
+                                <div class="event-details">
+                                    <h5>تسليم دفعة للبنك</h5>
+                                    <p>2:00 م - 3:00 م</p>
+                                </div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <span class="event-day">25</span>
+                                    <span class="event-month">يناير</span>
+                                </div>
+                                <div class="event-details">
+                                    <h5>تدريب الموظفين الجدد</h5>
+                                    <p>9:00 ص - 1:00 م</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- نموذج البيع السريع -->
+    <div class="modal-overlay" id="quickSaleModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>بيع سريع</h3>
+                <button class="modal-close" onclick="closeQuickSaleModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- سيتم إضافة محتوى النموذج -->
+            </div>
+        </div>
+    </div>
+
+    <!-- تحميل مكتبة Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- ملفات JavaScript -->
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

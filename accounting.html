@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الحسابات - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- معلومات المستخدم -->
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير الحسابات</span>
+            </div>
+        </div>
+
+        <!-- القائمة الرئيسية -->
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">النظام المحاسبي</h4>
+                <ul>
+                    <li class="menu-item active">
+                        <a href="accounting.html">
+                            <i class="fas fa-calculator"></i>
+                            <span>الحسابات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="payments.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>الدفعات</span>
+                            <span class="menu-badge">15</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="invoices.html">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>الفواتير</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="expenses.html">
+                            <i class="fas fa-receipt"></i>
+                            <span>المصروفات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="financial-statements.html">
+                            <i class="fas fa-chart-line"></i>
+                            <span>القوائم المالية</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- شريط التنقل العلوي -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">إدارة الحسابات</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>الحسابات</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate">الاثنين، 15 يناير 2024</span>
+                </div>
+                <button class="btn btn-primary" onclick="openNewTransaction()">
+                    <i class="fas fa-plus"></i>
+                    قيد جديد
+                </button>
+            </div>
+        </header>
+
+        <!-- محتوى الصفحة -->
+        <div class="content-wrapper">
+            <!-- تبويبات الصفحة -->
+            <div class="page-tabs">
+                <button class="tab-btn active" data-tab="journal">
+                    <i class="fas fa-book"></i>
+                    دفتر اليومية
+                </button>
+                <button class="tab-btn" data-tab="ledger">
+                    <i class="fas fa-file-alt"></i>
+                    دفتر الأستاذ
+                </button>
+                <button class="tab-btn" data-tab="trial-balance">
+                    <i class="fas fa-balance-scale"></i>
+                    ميزان المراجعة
+                </button>
+                <button class="tab-btn" data-tab="accounts">
+                    <i class="fas fa-university"></i>
+                    الحسابات
+                </button>
+                <button class="tab-btn" data-tab="reconciliation">
+                    <i class="fas fa-sync-alt"></i>
+                    المطابقة البنكية
+                </button>
+            </div>
+
+            <!-- محتوى التبويبات -->
+            <div class="tab-content">
+                <!-- تبويب دفتر اليومية -->
+                <div class="tab-pane active" id="journal-tab">
+                    <!-- فلترة الفترة -->
+                    <div class="period-filter">
+                        <div class="filter-group">
+                            <label>من</label>
+                            <input type="date" id="fromDate" class="form-control" value="2024-01-01">
+                        </div>
+                        <div class="filter-group">
+                            <label>إلى</label>
+                            <input type="date" id="toDate" class="form-control" value="2024-01-15">
+                        </div>
+                        <button class="btn btn-primary" onclick="loadJournalEntries()">
+                            <i class="fas fa-filter"></i>
+                            تطبيق
+                        </button>
+                        <button class="btn btn-outline" onclick="printJournal()">
+                            <i class="fas fa-print"></i>
+                            طباعة
+                        </button>
+                    </div>
+
+                    <!-- جدول دفتر اليومية -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h2>دفتر اليومية</h2>
+                            <div class="table-actions">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="journalSearch" placeholder="بحث في القيود...">
+                                </div>
+                                <button class="btn btn-outline" onclick="exportJournal()">
+                                    <i class="fas fa-download"></i>
+                                    تصدير
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table" id="journalTable">
+                                <thead>
+                                    <tr>
+                                        <th>التاريخ</th>
+                                        <th>رقم القيد</th>
+                                        <th>البيان</th>
+                                        <th>الحساب المدين</th>
+                                        <th>المبلغ المدين</th>
+                                        <th>الحساب الدائن</th>
+                                        <th>المبلغ الدائن</th>
+                                        <th>المستخدم</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-end"><strong>المجموع:</strong></td>
+                                        <td><strong id="totalDebit">0 ر.س</strong></td>
+                                        <td></td>
+                                        <td><strong id="totalCredit">0 ر.س</strong></td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تبويب دفتر الأستاذ -->
+                <div class="tab-pane" id="ledger-tab">
+                    <div class="ledger-management">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>اختيار الحساب</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="account-tree" id="accountTree">
+                                            <!-- سيتم ملؤه بواسطة JavaScript -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 id="ledgerAccountName">دفتر الأستاذ</h3>
+                                        <div class="period-filter-sm">
+                                            <input type="month" id="ledgerMonth" class="form-control" value="2024-01">
+                                            <button class="btn btn-primary" onclick="loadLedger()">
+                                                <i class="fas fa-filter"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="data-table" id="ledgerTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>التاريخ</th>
+                                                        <th>رقم القيد</th>
+                                                        <th>البيان</th>
+                                                        <th>مدين</th>
+                                                        <th>دائن</th>
+                                                        <th>الرصيد</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تبويب ميزان المراجعة -->
+                <div class="tab-pane" id="trial-balance-tab">
+                    <div class="trial-balance">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>ميزان المراجعة</h3>
+                                <div class="header-actions">
+                                    <select id="trialBalancePeriod" class="form-control">
+                                        <option value="2024-01">يناير 2024</option>
+                                        <option value="2023-12">ديسمبر 2023</option>
+                                        <option value="2023-11">نوفمبر 2023</option>
+                                    </select>
+                                    <button class="btn btn-primary" onclick="loadTrialBalance()">
+                                        <i class="fas fa-sync-alt"></i>
+                                        تحديث
+                                    </button>
+                                    <button class="btn btn-outline" onclick="printTrialBalance()">
+                                        <i class="fas fa-print"></i>
+                                        طباعة
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="data-table" id="trialBalanceTable">
+                                        <thead>
+                                            <tr>
+                                                <th>رقم الحساب</th>
+                                                <th>اسم الحساب</th>
+                                                <th>مدين</th>
+                                                <th>دائن</th>
+                                                <th>الفرق</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- سيتم ملؤه بواسطة JavaScript -->
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="2" class="text-end"><strong>المجموع:</strong></td>
+                                                <td><strong id="tbTotalDebit">0 ر.س</strong></td>
+                                                <td><strong id="tbTotalCredit">0 ر.س</strong></td>
+                                                <td><strong id="tbDifference">0 ر.س</strong></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تبويب الحسابات -->
+                <div class="tab-pane" id="accounts-tab">
+                    <div class="accounts-management">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>إضافة حساب جديد</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="accountForm">
+                                            <div class="form-group">
+                                                <label>رقم الحساب</label>
+                                                <input type="text" class="form-control" id="accountCode" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>اسم الحساب</label>
+                                                <input type="text" class="form-control" id="accountName" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>نوع الحساب</label>
+                                                <select class="form-control" id="accountType" required>
+                                                    <option value="">اختر النوع</option>
+                                                    <option value="asset">أصل</option>
+                                                    <option value="liability">خصم</option>
+                                                    <option value="equity">حقوق ملكية</option>
+                                                    <option value="revenue">إيرادات</option>
+                                                    <option value="expense">مصاريف</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>الحساب الرئيسي</label>
+                                                <select class="form-control" id="parentAccount">
+                                                    <option value="">بدون حساب رئيسي</option>
+                                                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>الوصف</label>
+                                                <textarea class="form-control" id="accountDescription" rows="3"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-block">
+                                                <i class="fas fa-save"></i>
+                                                حفظ الحساب
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>شجرة الحسابات</h3>
+                                        <div class="search-box">
+                                            <i class="fas fa-search"></i>
+                                            <input type="text" id="accountSearch" placeholder="بحث في الحسابات...">
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="accountsTree">
+                                            <!-- سيتم ملؤه بواسطة JavaScript -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تبويب المطابقة البنكية -->
+                <div class="tab-pane" id="reconciliation-tab">
+                    <div class="bank-reconciliation">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>المطابقة البنكية</h3>
+                                        <button class="btn btn-primary" onclick="openReconciliation()">
+                                            <i class="fas fa-sync-alt"></i>
+                                            بدء مطابقة جديدة
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="reconciliation-summary">
+                                            <div class="summary-cards">
+                                                <!-- سيتم ملؤه بواسطة JavaScript -->
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="data-table" id="reconciliationTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>الحساب البنكي</th>
+                                                        <th>آخر مطابقة</th>
+                                                        <th>رصيد البنك</th>
+                                                        <th>رصيد الدفتر</th>
+                                                        <th>الفرق</th>
+                                                        <th>الحالة</th>
+                                                        <th>الإجراءات</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نموذج القيد المحاسبي -->
+        <div class="modal-overlay" id="transactionModal" style="display: none;">
+            <div class="modal-container modal-lg">
+                <div class="modal-header">
+                    <h3>قيد محاسبي جديد</h3>
+                    <button class="modal-close" onclick="closeTransactionModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/accounting.js"></script>
+</body>
+</html>

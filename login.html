@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <!-- شريط التنقل -->
+    <nav class="navbar auth-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-car"></i>
+                    <span>CarDealer ERP</span>
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <span>ليس لديك حساب؟</span>
+                <a href="register.html" class="btn btn-outline">إنشاء حساب</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- محتوى صفحة تسجيل الدخول -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="auth-title">تسجيل الدخول</h1>
+                <p class="auth-subtitle">أدخل بيانات الدخول للوصول إلى حسابك</p>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <!-- رسائل الخطأ -->
+                <div id="loginError" class="alert alert-error" style="display: none;"></div>
+                
+                <!-- حقل اسم المستخدم -->
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fas fa-user"></i> اسم المستخدم أو البريد الإلكتروني
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-control"
+                        placeholder="أدخل اسم المستخدم أو البريد الإلكتروني"
+                        required
+                    >
+                    <div class="form-error" id="usernameError"></div>
+                </div>
+
+                <!-- حقل كلمة المرور -->
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i> كلمة المرور
+                    </label>
+                    <div class="password-container">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control"
+                            placeholder="أدخل كلمة المرور"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="passwordError"></div>
+                </div>
+
+                <!-- خيارات إضافية -->
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <span>تذكرني</span>
+                    </label>
+                    <a href="forgot-password.html" class="forgot-password">نسيت كلمة المرور؟</a>
+                </div>
+
+                <!-- زر تسجيل الدخول -->
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
+
+                <!-- اختيار الدور -->
+                <div class="role-selection">
+                    <p>الدور المتاح:</p>
+                    <div class="role-options">
+                        <label class="role-option">
+                            <input type="radio" name="role" value="admin" checked>
+                            <div class="role-card">
+                                <i class="fas fa-crown"></i>
+                                <span>مدير النظام</span>
+                            </div>
+                        </label>
+                        
+                        <label class="role-option">
+                            <input type="radio" name="role" value="sales">
+                            <div class="role-card">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>موظف مبيعات</span>
+                            </div>
+                        </label>
+                        
+                        <label class="role-option">
+                            <input type="radio" name="role" value="accounting">
+                            <div class="role-card">
+                                <i class="fas fa-calculator"></i>
+                                <span>موظف حسابات</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- تسجيل الدخول بديمو -->
+                <div class="demo-login">
+                    <p>تسجيل دخول تجريبي:</p>
+                    <div class="demo-buttons">
+                        <button type="button" class="btn btn-outline" onclick="demoLogin('admin')">
+                            <i class="fas fa-user-tie"></i> مدير النظام
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="demoLogin('sales')">
+                            <i class="fas fa-user"></i> موظف مبيعات
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- رابط التسجيل -->
+            <div class="auth-footer">
+                <p>ليس لديك حساب؟ <a href="register.html">إنشاء حساب جديد</a></p>
+                <a href="index.html" class="back-home">
+                    <i class="fas fa-arrow-right"></i> العودة للصفحة الرئيسية
+                </a>
+            </div>
+        </div>
+
+        <!-- قسم الصورة -->
+        <div class="auth-side">
+            <div class="auth-side-content">
+                <h2>مرحبًا بك مرة أخرى!</h2>
+                <p>ادخل إلى نظام ERP المتكامل لإدارة معرض سياراتك</p>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>إدارة المبيعات والمخزون</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>نظام محاسبي متكامل</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تقارير وتحليلات مفصلة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنتجات - إدارة المخزون</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* أنماط شريط التنقل العلوي النصي */
+        .topbar-nav {
+            display: flex;
+            gap: 1rem;
+            margin-right: 2rem;
+        }
+        .topbar-nav .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .topbar-nav .nav-link:hover {
+            background-color: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .topbar-nav .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <!-- القائمة الجانبية (ثابتة في جميع الصفحات) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المخزون</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">القائمة الرئيسية</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="dashboard.html">
+                            <i class="fas fa-home"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="sales.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>إدارة المبيعات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="inventory.html">
+                            <i class="fas fa-warehouse"></i>
+                            <span>إدارة المخزون</span>
+                            <span class="menu-badge warning">5</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="customers.html">
+                            <i class="fas fa-users"></i>
+                            <span>إدارة العملاء</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">المنتجات</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>المخزون</span>
+                </nav>
+                <!-- روابط التنقل النصية -->
+                <div class="topbar-nav">
+                    <a href="inventory.html" class="nav-link active">المنتجات</a>
+                    <a href="inventorycategories.html" class="nav-link">التصنيفات</a>
+                    <a href="inventorywarehouses.html" class="nav-link">المخازن</a>
+                    <a href="inventorymovements.html" class="nav-link">حركة المخزون</a>
+                    <a href="inventoryreports.html" class="nav-link">التقارير</a>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- محتوى المنتجات (من التبويب الأصلي) -->
+        <div class="content-wrapper">
+            <!-- أزرار التحكم -->
+            <div class="page-controls">
+                <button class="btn btn-primary btn-lg" onclick="openNewProductModal()">
+                    <i class="fas fa-plus-circle"></i>
+                    منتج جديد
+                </button>
+                <div class="filter-controls">
+                    <select id="categoryFilter" class="form-control">
+                        <option value="">جميع التصنيفات</option>
+                        <option value="cars">سيارات</option>
+                        <option value="accessories">اكسسوارات</option>
+                        <option value="parts">قطع غيار</option>
+                        <option value="services">خدمات</option>
+                    </select>
+                    <select id="stockFilter" class="form-control">
+                        <option value="">جميع المستويات</option>
+                        <option value="low">منخفض</option>
+                        <option value="medium">متوسط</option>
+                        <option value="high">عالٍ</option>
+                        <option value="out">نفذ</option>
+                    </select>
+                    <button class="btn btn-outline" onclick="applyInventoryFilters()">
+                        <i class="fas fa-filter"></i>
+                        تصفية
+                    </button>
+                </div>
+            </div>
+
+            <!-- إحصائيات سريعة -->
+            <div class="inventory-stats">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-car"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-title">السيارات</span>
+                        <span class="stat-value">25</span>
+                        <span class="stat-change">5 منخفضة</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-cogs"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-title">الاكسسوارات</span>
+                        <span class="stat-value">150</span>
+                        <span class="stat-change">12 منخفضة</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-tools"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-title">قطع الغيار</span>
+                        <span class="stat-value">450</span>
+                        <span class="stat-change">25 منخفضة</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-title">قيمة المخزون</span>
+                        <span class="stat-value">8.5M <small>ر.س</small></span>
+                        <span class="stat-change positive">+12%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- جدول المنتجات -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>قائمة المنتجات</h2>
+                    <div class="table-actions">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="productSearch" placeholder="بحث في المنتجات...">
+                        </div>
+                        <button class="btn btn-outline" onclick="exportInventory()">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table" id="inventoryTable">
+                        <thead>
+                            <tr>
+                                <th>الصورة</th>
+                                <th>المنتج</th>
+                                <th>التصنيف</th>
+                                <th>المخزون</th>
+                                <th>الحد الأدنى</th>
+                                <th>سعر الشراء</th>
+                                <th>سعر البيع</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- يتم ملؤها بواسطة JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- النموذج المنبثق لإضافة/تعديل المنتج -->
+        <div class="modal-overlay" id="productModal" style="display: none;">
+            <div class="modal-container modal-lg">
+                <div class="modal-header">
+                    <h3 id="productModalTitle">منتج جديد</h3>
+                    <button class="modal-close" onclick="closeProductModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- يتم ملؤها بواسطة JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/inventory.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuthStatus()) window.location.href = 'login.html';
+            updateDate();
+            initSidebar();
+            loadInventoryData();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,680 @@
+/* ملف أنماط العملاء */
+
+/* إحصائيات العملاء */
+.customer-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.customer-stats .stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-right: 4px solid;
+}
+
+.customer-stats .stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+}
+
+.customer-stats .stat-icon.total {
+    background: #007bff;
+    border-color: #007bff;
+}
+
+.customer-stats .stat-icon.active {
+    background: #28a745;
+    border-color: #28a745;
+}
+
+.customer-stats .stat-icon.vip {
+    background: #ffc107;
+    border-color: #ffc107;
+}
+
+.customer-stats .stat-icon.revenue {
+    background: #6f42c1;
+    border-color: #6f42c1;
+}
+
+.stat-info h3 {
+    margin: 0 0 5px 0;
+    color: #495057;
+    font-size: 14px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    color: #2c3e50;
+}
+
+.stat-change {
+    font-size: 12px;
+    margin: 5px 0 0 0;
+}
+
+.stat-change.positive {
+    color: #28a745;
+}
+
+.stat-change.negative {
+    color: #dc3545;
+}
+
+/* بحث العملاء */
+.search-section {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1;
+    position: relative;
+}
+
+.search-box i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* شبكة العملاء */
+.customers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.customer-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease;
+    border: 1px solid #dee2e6;
+    position: relative;
+}
+
+.customer-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.customer-card.vip {
+    border-top: 4px solid #ffc107;
+}
+
+.customer-card.new {
+    border-top: 4px solid #28a745;
+}
+
+.customer-avatar {
+    width: 60px;
+    height: 60px;
+    background: #007bff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.customer-info {
+    margin-bottom: 15px;
+}
+
+.customer-info h4 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+    font-size: 18px;
+}
+
+.customer-info p {
+    margin: 5px 0;
+    color: #6c757d;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.customer-group {
+    display: inline-block;
+    padding: 3px 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #495057;
+    margin-top: 5px;
+}
+
+.customer-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.customer-stats .stat {
+    text-align: center;
+}
+
+.customer-stats .stat-label {
+    display: block;
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.customer-stats .stat-value {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.customer-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.loading-cards {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+}
+
+/* مسار تحويل العملاء المحتملين */
+.conversion-funnel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.conversion-funnel h3 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+}
+
+.funnel-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.funnel-step {
+    flex: 1;
+    min-width: 150px;
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.step-count {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #007bff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 auto 10px;
+}
+
+.step-count.new { background: #17a2b8; }
+.step-count.contacted { background: #007bff; }
+.step-count.qualified { background: #28a745; }
+.step-count.converted { background: #6f42c1; }
+
+.step-info h4 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+}
+
+.step-info p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.funnel-arrow {
+    color: #6c757d;
+    font-size: 20px;
+}
+
+/* مجموعات العملاء */
+.groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.group-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border: 1px solid #dee2e6;
+}
+
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.group-header h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.group-badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.group-badge.vip {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.group-info p {
+    color: #6c757d;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.group-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0;
+}
+
+.group-stats .stat {
+    text-align: center;
+    color: #495057;
+    font-size: 14px;
+}
+
+.group-stats .stat i {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #007bff;
+}
+
+.group-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.group-actions button {
+    flex: 1;
+}
+
+/* تقويم الاتصالات */
+.communications-calendar {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-header h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.btn-calendar-nav {
+    background: none;
+    border: 1px solid #dee2e6;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #495057;
+    transition: all 0.3s ease;
+}
+
+.btn-calendar-nav:hover {
+    background: #f8f9fa;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.calendar-grid {
+    min-height: 200px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #dee2e6;
+}
+
+.calendar-placeholder {
+    text-align: center;
+    color: #6c757d;
+}
+
+.calendar-placeholder i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    color: #adb5bd;
+}
+
+/* قائمة الاتصالات الحديثة */
+.recent-communications {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recent-communications h3 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+}
+
+.communications-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.communication-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    gap: 15px;
+}
+
+.communication-item:last-child {
+    border-bottom: none;
+}
+
+.comm-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e3f2fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #007bff;
+}
+
+.comm-details {
+    flex: 1;
+}
+
+.comm-details h4 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+}
+
+.comm-details p {
+    margin: 0 0 8px 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.comm-meta {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.comm-time {
+    font-size: 12px;
+    color: #adb5bd;
+}
+
+.comm-type {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.comm-type.call {
+    background: #d4edda;
+    color: #155724;
+}
+
+.comm-type.email {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.comm-type.meeting {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.comm-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* تحليلات العملاء */
+.customer-analytics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.analytics-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-card h3 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+    font-size: 18px;
+}
+
+/* تحليل القيمة الدائمة */
+.customer-ltv {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.customer-ltv h3 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+}
+
+/* تبويبات النموذج */
+.form-tabs {
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 20px;
+}
+
+.form-tab {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    color: #6c757d;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.form-tab:hover {
+    color: #495057;
+}
+
+.form-tab.active {
+    color: #007bff;
+    border-bottom-color: #007bff;
+}
+
+.form-tab-content {
+    display: none;
+}
+
+.form-tab-content.active {
+    display: block;
+}
+
+/* حالات العملاء المحتملين */
+.lead-status {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.lead-status.new {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.lead-status.contacted {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.lead-status.qualified {
+    background: #d4edda;
+    color: #155724;
+}
+
+.lead-status.converted {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+.lead-status.lost {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* تصميم متجاوب */
+@media (max-width: 992px) {
+    .funnel-steps {
+        flex-direction: column;
+    }
+    
+    .funnel-arrow {
+        transform: rotate(90deg);
+    }
+    
+    .customer-analytics {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .search-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .customers-grid,
+    .groups-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .customer-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .form-tab {
+        flex: 1;
+        text-align: center;
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .customer-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .customer-card .customer-actions {
+        flex-direction: column;
+    }
+    
+    .group-actions {
+        flex-direction: column;
+    }
+}

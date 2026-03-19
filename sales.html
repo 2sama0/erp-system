@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المبيعات - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- معلومات المستخدم -->
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المبيعات</span>
+            </div>
+        </div>
+
+        <!-- القائمة الرئيسية -->
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">القائمة الرئيسية</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="dashboard.html">
+                            <i class="fas fa-home"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="sales.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>إدارة المبيعات</span>
+                            <span class="menu-badge">15</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="inventory.html">
+                            <i class="fas fa-warehouse"></i>
+                            <span>إدارة المخزون</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="customers.html">
+                            <i class="fas fa-users"></i>
+                            <span>إدارة العملاء</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h4 class="section-title">المشتريات والموردين</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="purchases.html">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>إدارة المشتريات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="suppliers.html">
+                            <i class="fas fa-truck"></i>
+                            <span>إدارة الموردين</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="invoices.html">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>الفواتير</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <h4 class="section-title">النظام المحاسبي</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="accounting.html">
+                            <i class="fas fa-calculator"></i>
+                            <span>الحسابات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="payments.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>الدفعات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="expenses.html">
+                            <i class="fas fa-receipt"></i>
+                            <span>المصروفات</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- شريط التنقل العلوي -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">إدارة المبيعات</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>المبيعات</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate">الاثنين، 15 يناير 2024</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- محتوى الصفحة -->
+        <div class="content-wrapper">
+            <!-- أزرار التحكم السريعة -->
+            <div class="page-controls">
+                <button class="btn btn-primary btn-lg" onclick="openNewOrderModal()">
+                    <i class="fas fa-plus-circle"></i>
+                    بيع جديد
+                </button>
+                <button class="btn btn-outline" onclick="exportSalesData()">
+                    <i class="fas fa-download"></i>
+                    تصدير البيانات
+                </button>
+                <div class="filter-controls">
+                    <select id="statusFilter" class="form-control">
+                        <option value="">جميع الحالات</option>
+                        <option value="pending">معلق</option>
+                        <option value="processing">قيد التنفيذ</option>
+                        <option value="completed">مكتمل</option>
+                        <option value="financing">تمويل</option>
+                        <option value="cancelled">ملغي</option>
+                    </select>
+                    <input type="date" id="dateFilter" class="form-control" placeholder="التاريخ">
+                    <button class="btn btn-outline" onclick="applyFilters()">
+                        <i class="fas fa-filter"></i>
+                        تصفية
+                    </button>
+                    <button class="btn btn-outline" onclick="resetFilters()">
+                        <i class="fas fa-redo"></i>
+                        إعادة تعيين
+                    </button>
+                </div>
+            </div>
+
+            <!-- إحصائيات سريعة -->
+            <div class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">إجمالي المبيعات</span>
+                        <span class="stat-value">2,450,000 <small>ر.س</small></span>
+                        <span class="stat-change positive">+12.5%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">عدد الطلبات</span>
+                        <span class="stat-value">48</span>
+                        <span class="stat-change positive">+8</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">متوسط قيمة الطلب</span>
+                        <span class="stat-value">51,042 <small>ر.س</small></span>
+                        <span class="stat-change positive">+5.2%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">عملاء جدد</span>
+                        <span class="stat-value">12</span>
+                        <span class="stat-change positive">+4</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- جدول طلبات البيع -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>طلبات البيع</h2>
+                    <div class="table-actions">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="orderSearch" placeholder="بحث في الطلبات...">
+                        </div>
+                        <button class="btn btn-outline" onclick="refreshTable()">
+                            <i class="fas fa-sync-alt"></i>
+                            تحديث
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table" id="salesTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="selectAll">
+                                </th>
+                                <th>رقم الطلب</th>
+                                <th>العميل</th>
+                                <th>التاريخ</th>
+                                <th>المنتجات</th>
+                                <th>المبلغ الإجمالي</th>
+                                <th>المبلغ المدفوع</th>
+                                <th>طريقة الدفع</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملؤه بواسطة JavaScript -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="10">
+                                    <div class="table-footer">
+                                        <div class="pagination-info">
+                                            عرض <span id="startRow">1</span>-<span id="endRow">10</span> من <span id="totalRows">48</span> طلب
+                                        </div>
+                                        <div class="pagination-controls">
+                                            <button class="btn btn-outline" onclick="prevPage()" disabled>
+                                                <i class="fas fa-chevron-right"></i>
+                                            </button>
+                                            <span class="current-page">1</span>
+                                            <button class="btn btn-outline" onclick="nextPage()">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </button>
+                                            <select class="page-size">
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- جدول تفاصيل الطلب -->
+            <div class="card" id="orderDetailsCard" style="display: none;">
+                <div class="card-header">
+                    <h3>تفاصيل الطلب</h3>
+                    <button class="btn btn-outline" onclick="closeOrderDetails()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="card-body" id="orderDetailsContent">
+                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                </div>
+            </div>
+
+            <!-- نموذج طلب البيع الجديد -->
+            <div class="modal-overlay" id="newOrderModal" style="display: none;">
+                <div class="modal-container modal-lg">
+                    <div class="modal-header">
+                        <h3>طلب بيع جديد</h3>
+                        <button class="modal-close" onclick="closeNewOrderModal()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- سيتم ملؤه بواسطة JavaScript -->
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline" onclick="closeNewOrderModal()">
+                            إلغاء
+                        </button>
+                        <button class="btn btn-primary" onclick="saveNewOrder()">
+                            <i class="fas fa-save"></i>
+                            حفظ الطلب
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/sales.js"></script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <!-- شريط التنقل -->
+    <nav class="navbar auth-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-car"></i>
+                    <span>CarDealer ERP</span>
+                </a>
+            </div>
+            
+            <div class="nav-actions">
+                <span>لديك حساب بالفعل؟</span>
+                <a href="login.html" class="btn btn-outline">تسجيل الدخول</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- محتوى صفحة إنشاء حساب -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="auth-title">إنشاء حساب جديد</h1>
+                <p class="auth-subtitle">املأ النموذج للبدء باستخدام النظام</p>
+            </div>
+
+            <form id="registerForm" class="auth-form">
+                <!-- رسائل النجاح/الخطأ -->
+                <div id="registerSuccess" class="alert alert-success" style="display: none;"></div>
+                <div id="registerError" class="alert alert-error" style="display: none;"></div>
+                
+                <!-- حقل الاسم الكامل -->
+                <div class="form-group">
+                    <label for="fullName" class="form-label">
+                        <i class="fas fa-user"></i> الاسم الكامل
+                    </label>
+                    <input 
+                        type="text" 
+                        id="fullName" 
+                        name="fullName" 
+                        class="form-control"
+                        placeholder="أدخل الاسم الكامل"
+                        required
+                    >
+                    <div class="form-error" id="fullNameError"></div>
+                </div>
+
+                <!-- حقل البريد الإلكتروني -->
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-envelope"></i> البريد الإلكتروني
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-control"
+                        placeholder="example@domain.com"
+                        required
+                    >
+                    <div class="form-error" id="emailError"></div>
+                </div>
+
+                <!-- حقل اسم المستخدم -->
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fas fa-user-tag"></i> اسم المستخدم
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-control"
+                        placeholder="أدخل اسم مستخدم فريد"
+                        required
+                    >
+                    <div class="form-error" id="usernameError"></div>
+                </div>
+
+                <!-- حقل كلمة المرور -->
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i> كلمة المرور
+                    </label>
+                    <div class="password-container">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control"
+                            placeholder="كلمة مرور قوية"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-meter">
+                            <div class="strength-bar"></div>
+                        </div>
+                        <span class="strength-text">قوة كلمة المرور: ضعيفة</span>
+                    </div>
+                    <div class="form-error" id="passwordError"></div>
+                </div>
+
+                <!-- حقل تأكيد كلمة المرور -->
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">
+                        <i class="fas fa-lock"></i> تأكيد كلمة المرور
+                    </label>
+                    <div class="password-container">
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            class="form-control"
+                            placeholder="أعد إدخال كلمة المرور"
+                            required
+                        >
+                        <button type="button" class="password-toggle" id="toggleConfirmPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="confirmPasswordError"></div>
+                </div>
+
+                <!-- حقل رقم الهاتف -->
+                <div class="form-group">
+                    <label for="phone" class="form-label">
+                        <i class="fas fa-phone"></i> رقم الهاتف
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        class="form-control"
+                        placeholder="05XXXXXXXX"
+                        required
+                    >
+                    <div class="form-error" id="phoneError"></div>
+                </div>
+
+                <!-- اختيار الدور -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user-tie"></i> الدور
+                    </label>
+                    <div class="role-selection">
+                        <select id="role" name="role" class="form-control" required>
+                            <option value="">اختر دور المستخدم</option>
+                            <option value="admin">مدير النظام</option>
+                            <option value="sales">موظف مبيعات</option>
+                            <option value="accounting">موظف حسابات</option>
+                            <option value="inventory">موظف مخزون</option>
+                            <option value="purchases">موظف مشتريات</option>
+                        </select>
+                    </div>
+                    <div class="form-error" id="roleError"></div>
+                </div>
+
+                <!-- الشروط والأحكام -->
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <span>أوافق على <a href="terms.html">الشروط والأحكام</a> و <a href="privacy.html">سياسة الخصوصية</a></span>
+                    </label>
+                    <div class="form-error" id="termsError"></div>
+                </div>
+
+                <!-- زر إنشاء الحساب -->
+                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                    <i class="fas fa-user-plus"></i> إنشاء حساب جديد
+                </button>
+            </form>
+
+            <!-- روابط إضافية -->
+            <div class="auth-footer">
+                <p>لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a></p>
+                <a href="index.html" class="back-home">
+                    <i class="fas fa-arrow-right"></i> العودة للصفحة الرئيسية
+                </a>
+            </div>
+        </div>
+
+        <!-- قسم الصورة والمزايا -->
+        <div class="auth-side">
+            <div class="auth-side-content">
+                <h2>انضم إلى نظامنا المتكامل</h2>
+                <p>استفد من جميع المزايا التي نقدمها لإدارة معرض سياراتك</p>
+                
+                <div class="benefits">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>زيادة الإيرادات</h4>
+                            <p>تحسين المبيعات وإدارة المخزون بكفاءة</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>أمان البيانات</h4>
+                            <p>حماية كاملة لبياناتك وعملياتك</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>دعم فني 24/7</h4>
+                            <p>فريق دعم متاح على مدار الساعة</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <p>"النظام غير طريقة إدارتنا للمعرض بالكامل، أصبحت العمليات أكثر سلاسة ودقة"</p>
+                    <div class="testimonial-author">
+                        <strong>أحمد السليم</strong>
+                        <span>مدير معرض السيارات المتميز</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

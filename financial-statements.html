@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القوائم المالية - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* أنماط إضافية للقوائم المالية */
+        .statement-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .statement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .statement-header h2 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .period-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .statement-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+        .statement-table th {
+            background: #f8f9fa;
+            padding: 14px 16px;
+            text-align: center;
+            font-weight: 700;
+            color: #2c3e50;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .statement-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .statement-table .section-title {
+            background: #e3f2fd;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+        .statement-table .total-row {
+            font-weight: 700;
+            background: #f1f3f4;
+            border-top: 2px solid #adb5bd;
+        }
+        .statement-table .sub-total {
+            font-weight: 600;
+            background: #f8f9fa;
+            color: #495057;
+        }
+        .amount {
+            text-align: left;
+            direction: ltr;
+            font-family: 'Courier New', monospace;
+            font-weight: 500;
+        }
+        .positive { color: #2e7d32; }
+        .negative { color: #c62828; }
+        .indent-1 { padding-right: 30px !important; }
+        .indent-2 { padding-right: 50px !important; }
+        .print-btn { margin-right: 10px; }
+    </style>
+</head>
+<body class="dashboard-page">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير الحسابات</span>
+            </div>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">النظام المحاسبي</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="accounting.html">
+                            <i class="fas fa-calculator"></i>
+                            <span>الحسابات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="payments.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>الدفعات</span>
+                            <span class="menu-badge">15</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="invoices.html">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>الفواتير</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="expenses.html">
+                            <i class="fas fa-receipt"></i>
+                            <span>المصروفات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="financial-statements.html">
+                            <i class="fas fa-chart-line"></i>
+                            <span>القوائم المالية</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">القوائم المالية</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>القوائم المالية</span>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate"></span>
+                </div>
+                <button class="btn btn-primary print-btn" onclick="window.print()">
+                    <i class="fas fa-print"></i> طباعة
+                </button>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <!-- تبويبات القوائم الأربعة -->
+            <div class="page-tabs" id="statementTabs">
+                <button class="tab-btn active" data-tab="balance-sheet">
+                    <i class="fas fa-balance-scale"></i> الميزانية العمومية
+                </button>
+                <button class="tab-btn" data-tab="income-statement">
+                    <i class="fas fa-chart-pie"></i> قائمة الدخل
+                </button>
+                <button class="tab-btn" data-tab="cash-flow">
+                    <i class="fas fa-money-bill-wave"></i> قائمة التدفقات النقدية
+                </button>
+                <button class="tab-btn" data-tab="equity">
+                    <i class="fas fa-chart-line"></i> قائمة الأرباح المحتجزة
+                </button>
+            </div>
+
+            <div class="tab-content">
+                <!-- 1. الميزانية العمومية -->
+                <div class="tab-pane active" id="balance-sheet-tab">
+                    <div class="statement-card">
+                        <div class="statement-header">
+                            <h2>الميزانية العمومية</h2>
+                            <div class="period-selector">
+                                <label for="bsPeriod">الفترة:</label>
+                                <select id="bsPeriod" class="form-control">
+                                    <option value="2024-01-31">31 يناير 2024</option>
+                                    <option value="2023-12-31">31 ديسمبر 2023</option>
+                                    <option value="2023-11-30">30 نوفمبر 2023</option>
+                                </select>
+                                <button class="btn btn-primary" onclick="loadBalanceSheet()">
+                                    <i class="fas fa-sync-alt"></i> تحديث
+                                </button>
+                            </div>
+                        </div>
+                        <div id="balanceSheetContent"></div>
+                    </div>
+                </div>
+
+                <!-- 2. قائمة الدخل -->
+                <div class="tab-pane" id="income-statement-tab">
+                    <div class="statement-card">
+                        <div class="statement-header">
+                            <h2>قائمة الدخل</h2>
+                            <div class="period-selector">
+                                <label for="isPeriod">الشهر:</label>
+                                <select id="isPeriod" class="form-control">
+                                    <option value="2024-01">يناير 2024</option>
+                                    <option value="2023-12">ديسمبر 2023</option>
+                                    <option value="2023-11">نوفمبر 2023</option>
+                                </select>
+                                <button class="btn btn-primary" onclick="loadIncomeStatement()">
+                                    <i class="fas fa-sync-alt"></i> تحديث
+                                </button>
+                            </div>
+                        </div>
+                        <div id="incomeStatementContent"></div>
+                    </div>
+                </div>
+
+                <!-- 3. قائمة التدفقات النقدية -->
+                <div class="tab-pane" id="cash-flow-tab">
+                    <div class="statement-card">
+                        <div class="statement-header">
+                            <h2>قائمة التدفقات النقدية</h2>
+                            <div class="period-selector">
+                                <label for="cfPeriod">الشهر:</label>
+                                <select id="cfPeriod" class="form-control">
+                                    <option value="2024-01">يناير 2024</option>
+                                    <option value="2023-12">ديسمبر 2023</option>
+                                    <option value="2023-11">نوفمبر 2023</option>
+                                </select>
+                                <button class="btn btn-primary" onclick="loadCashFlow()">
+                                    <i class="fas fa-sync-alt"></i> تحديث
+                                </button>
+                            </div>
+                        </div>
+                        <div id="cashFlowContent"></div>
+                    </div>
+                </div>
+
+                <!-- 4. قائمة الأرباح المحتجزة -->
+                <div class="tab-pane" id="equity-tab">
+                    <div class="statement-card">
+                        <div class="statement-header">
+                            <h2>قائمة الأرباح المحتجزة</h2>
+                            <div class="period-selector">
+                                <label for="eqPeriod">الشهر:</label>
+                                <select id="eqPeriod" class="form-control">
+                                    <option value="2024-01">يناير 2024</option>
+                                    <option value="2023-12">ديسمبر 2023</option>
+                                    <option value="2023-11">نوفمبر 2023</option>
+                                </select>
+                                <button class="btn btn-primary" onclick="loadEquity()">
+                                    <i class="fas fa-sync-alt"></i> تحديث
+                                </button>
+                            </div>
+                        </div>
+                        <div id="equityContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/financial-statements.js"></script>
+</body>
+</html>

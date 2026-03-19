@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حركة المخزون - إدارة المخزون</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .topbar-nav {
+            display: flex;
+            gap: 1rem;
+            margin-right: 2rem;
+        }
+        .topbar-nav .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .topbar-nav .nav-link:hover {
+            background-color: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .topbar-nav .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المخزون</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">القائمة الرئيسية</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="dashboard.html">
+                            <i class="fas fa-home"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="sales.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>إدارة المبيعات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="inventory.html">
+                            <i class="fas fa-warehouse"></i>
+                            <span>إدارة المخزون</span>
+                            <span class="menu-badge warning">5</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="customers.html">
+                            <i class="fas fa-users"></i>
+                            <span>إدارة العملاء</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+    
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">حركة المخزون</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>المخزون</span>
+                </nav>
+                <div class="topbar-nav">
+                    <a href="inventory.html" class="nav-link">المنتجات</a>
+                    <a href="inventorycategories.html" class="nav-link">التصنيفات</a>
+                    <a href="inventorywarehouses.html" class="nav-link">المخازن</a>
+                    <a href="inventorymovements.html" class="nav-link active">حركة المخزون</a>
+                    <a href="inventoryreports.html" class="nav-link">التقارير</a>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- محتوى حركة المخزون -->
+        <div class="content-wrapper">
+            <div class="inventory-movements">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>حركة المخزون</h3>
+                                <div class="header-actions">
+                                    <button class="btn btn-primary" onclick="openNewMovementModal()">
+                                        <i class="fas fa-plus"></i>
+                                        حركة جديدة
+                                    </button>
+                                    <select class="form-control" id="movementTypeFilter">
+                                        <option value="">جميع الحركات</option>
+                                        <option value="purchase">شراء</option>
+                                        <option value="sale">بيع</option>
+                                        <option value="return">إرجاع</option>
+                                        <option value="adjustment">تعديل</option>
+                                        <option value="transfer">تحويل</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="data-table" id="movementsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>رقم الحركة</th>
+                                                <th>التاريخ</th>
+                                                <th>النوع</th>
+                                                <th>المنتج</th>
+                                                <th>الكمية</th>
+                                                <th>المخزن</th>
+                                                <th>القيمة</th>
+                                                <th>المستخدم</th>
+                                                <th>الإجراءات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/inventory.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuthStatus()) window.location.href = 'login.html';
+            updateDate();
+            initSidebar();
+            loadInventoryMovements();
+        });
+
+        function openNewMovementModal() {
+            alert('سيتم فتح نافذة إضافة حركة جديدة قريباً');
+        }
+    </script>
+</body>
+</html>

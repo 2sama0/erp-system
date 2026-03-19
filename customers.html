@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العملاء - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- معلومات المستخدم -->
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المبيعات</span>
+            </div>
+        </div>
+
+        <!-- القائمة الرئيسية -->
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">القائمة الرئيسية</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="dashboard.html">
+                            <i class="fas fa-home"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="sales.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>إدارة المبيعات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="inventory.html">
+                            <i class="fas fa-warehouse"></i>
+                            <span>إدارة المخزون</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="customers.html">
+                            <i class="fas fa-users"></i>
+                            <span>إدارة العملاء</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- شريط التنقل العلوي -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">إدارة العملاء</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>العملاء</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate">الاثنين، 15 يناير 2024</span>
+                </div>
+                <button class="btn btn-primary" onclick="openNewCustomerModal()">
+                    <i class="fas fa-plus"></i>
+                    عميل جديد
+                </button>
+            </div>
+        </header>
+
+        <!-- شريط التنقل بين الصفحات (روابط) -->
+        <div class="page-tabs">
+            <a href="customers.html" class="tab-btn active">العملاء</a>
+            <a href="customersleads.html" class="tab-btn">العملاء المحتملين</a>
+            <a href="customersgroups.html" class="tab-btn">مجموعات العملاء</a>
+            <a href="customerscommunications.html" class="tab-btn">الاتصالات</a>
+            <a href="customersreports.html" class="tab-btn">تقارير العملاء</a>
+        </div>
+
+        <!-- محتوى الصفحة: العملاء فقط -->
+        <div class="content-wrapper">
+            <!-- فلترة وبحث -->
+            <div class="page-controls">
+                <div class="filter-controls">
+                    <select id="typeFilter" class="form-control">
+                        <option value="">جميع الأنواع</option>
+                        <option value="individual">أفراد</option>
+                        <option value="company">شركات</option>
+                    </select>
+                    <select id="statusFilter" class="form-control">
+                        <option value="">جميع الحالات</option>
+                        <option value="active">نشط</option>
+                        <option value="inactive">غير نشط</option>
+                        <option value="lead">عميل محتمل</option>
+                    </select>
+                    <select id="creditFilter" class="form-control">
+                        <option value="">جميع حالات الائتمان</option>
+                        <option value="good">جيد</option>
+                        <option value="warning">تحذير</option>
+                        <option value="danger">مخاطر</option>
+                    </select>
+                    <button class="btn btn-outline" onclick="applyCustomerFilters()">
+                        <i class="fas fa-filter"></i>
+                        تطبيق
+                    </button>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="customerSearch" placeholder="بحث في العملاء...">
+                </div>
+            </div>
+
+            <!-- جدول العملاء -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>قائمة العملاء</h2>
+                    <div class="table-actions">
+                        <button class="btn btn-outline" onclick="exportCustomers()">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table" id="customersTable">
+                        <thead>
+                            <tr>
+                                <th>العميل</th>
+                                <th>معلومات الاتصال</th>
+                                <th>النوع</th>
+                                <th>تاريخ التسجيل</th>
+                                <th>المشتريات</th>
+                                <th>الائتمان</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملؤه بواسطة JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- نموذج عميل جديد -->
+        <div class="modal-overlay" id="customerModal" style="display: none;">
+            <div class="modal-container modal-lg">
+                <div class="modal-header">
+                    <h3>عميل جديد</h3>
+                    <button class="modal-close" onclick="closeCustomerModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- تحميل مكتبة Chart.js (قد لا تحتاجها هذه الصفحة لكن تبقى كما هي) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/customers.js"></script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المشتريات - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- القائمة الجانبية -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- معلومات المستخدم -->
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المشتريات</span>
+            </div>
+        </div>
+
+        <!-- القائمة الرئيسية -->
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">المشتريات والموردين</h4>
+                <ul>
+                    <li class="menu-item active">
+                        <a href="purchases.html">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>إدارة المشتريات</span>
+                            <span class="menu-badge">8</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="suppliers.html">
+                            <i class="fas fa-truck"></i>
+                            <span>إدارة الموردين</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchase-orders.html">
+                            <i class="fas fa-file-purchase"></i>
+                            <span>طلبات الشراء</span>
+                            <span class="menu-badge warning">3</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchase-invoices.html">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>فواتير المشتريات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="supplier-payments.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>دفعات الموردين</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- شريط التنقل العلوي -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">إدارة المشتريات</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>المشتريات</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate">الاثنين، 15 يناير 2024</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- محتوى الصفحة -->
+        <div class="content-wrapper">
+            <!-- أزرار التحكم السريعة -->
+            <div class="page-controls">
+                <button class="btn btn-primary btn-lg" onclick="openNewPurchaseOrder()">
+                    <i class="fas fa-plus-circle"></i>
+                    طلب شراء جديد
+                </button>
+                <button class="btn btn-success" onclick="openNewPurchaseInvoice()">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    فاتورة مشتريات
+                </button>
+                <div class="filter-controls">
+                    <select id="supplierFilter" class="form-control">
+                        <option value="">جميع الموردين</option>
+                        <option value="1">السيارات المتميزة</option>
+                        <option value="2">مورد الاكسسوارات</option>
+                        <option value="3">وكيل السيارات</option>
+                    </select>
+                    <select id="statusFilter" class="form-control">
+                        <option value="">جميع الحالات</option>
+                        <option value="pending">معلق</option>
+                        <option value="ordered">تم الطلب</option>
+                        <option value="received">تم الاستلام</option>
+                        <option value="cancelled">ملغي</option>
+                    </select>
+                    <button class="btn btn-outline" onclick="applyPurchaseFilters()">
+                        <i class="fas fa-filter"></i>
+                        تصفية
+                    </button>
+                </div>
+            </div>
+
+            <!-- إحصائيات سريعة -->
+            <div class="purchase-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">إجمالي المشتريات</span>
+                        <span class="stat-value">1,850,000 <small>ر.س</small></span>
+                        <span class="stat-change">هذا الشهر</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">فواتير مستحقة</span>
+                        <span class="stat-value">3</span>
+                        <span class="stat-change warning">قيمة 450,000 ر.س</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">الموردين النشطين</span>
+                        <span class="stat-value">12</span>
+                        <span class="stat-change positive">+2 جديد</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">طلبات متأخرة</span>
+                        <span class="stat-value">2</span>
+                        <span class="stat-change danger">تحتاج متابعة</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويبات المشتريات -->
+            <div class="purchase-tabs">
+                <button class="tab-btn active" data-tab="orders">
+                    <i class="fas fa-file-purchase"></i>
+                    طلبات الشراء
+                </button>
+                <button class="tab-btn" data-tab="invoices">
+                    <i class="fas fa-file-invoice"></i>
+                    فواتير المشتريات
+                </button>
+                <button class="tab-btn" data-tab="payments">
+                    <i class="fas fa-money-bill-wave"></i>
+                    دفعات الموردين
+                </button>
+                <button class="tab-btn" data-tab="analysis">
+                    <i class="fas fa-chart-bar"></i>
+                    تحليل المشتريات
+                </button>
+            </div>
+
+            <!-- محتوى التبويبات -->
+            <div class="tab-content">
+                <!-- تبويب طلبات الشراء -->
+                <div class="tab-pane active" id="orders-tab">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h2>طلبات الشراء</h2>
+                            <div class="table-actions">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="purchaseSearch" placeholder="بحث في طلبات الشراء...">
+                                </div>
+                                <button class="btn btn-outline" onclick="exportPurchaseData()">
+                                    <i class="fas fa-download"></i>
+                                    تصدير
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table" id="purchaseOrdersTable">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الطلب</th>
+                                        <th>المورد</th>
+                                        <th>التاريخ</th>
+                                        <th>تاريخ التسليم المتوقع</th>
+                                        <th>المنتجات</th>
+                                        <th>المبلغ الإجمالي</th>
+                                        <th>المبلغ المدفوع</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تبويب فواتير المشتريات -->
+                <div class="tab-pane" id="invoices-tab">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h2>فواتير المشتريات</h2>
+                            <div class="table-actions">
+                                <button class="btn btn-outline" onclick="openUnpaidInvoices()">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    الفواتير غير المدفوعة
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table" id="purchaseInvoicesTable">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الفاتورة</th>
+                                        <th>المورد</th>
+                                        <th>تاريخ الفاتورة</th>
+                                        <th>تاريخ الاستحقاق</th>
+                                        <th>المبلغ الإجمالي</th>
+                                        <th>المبلغ المدفوع</th>
+                                        <th>المبلغ المتبقي</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تبويب دفعات الموردين -->
+                <div class="tab-pane" id="payments-tab">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h2>دفعات الموردين</h2>
+                            <div class="table-actions">
+                                <button class="btn btn-primary" onclick="openNewPayment()">
+                                    <i class="fas fa-plus"></i>
+                                    تسجيل دفعة
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table" id="supplierPaymentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الدفعة</th>
+                                        <th>المورد</th>
+                                        <th>رقم الفاتورة</th>
+                                        <th>التاريخ</th>
+                                        <th>المبلغ</th>
+                                        <th>طريقة الدفع</th>
+                                        <th>الحالة</th>
+                                        <th>المستخدم</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تبويب تحليل المشتريات -->
+                <div class="tab-pane" id="analysis-tab">
+                    <div class="purchase-analysis">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>المشتريات حسب المورد</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas id="supplierChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>المشتريات الشهرية</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas id="monthlyPurchaseChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>أفضل المنتجات شراءً</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="data-table" id="topProductsTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>المنتج</th>
+                                                        <th>الكمية المشتراة</th>
+                                                        <th>إجمالي الشراء</th>
+                                                        <th>متوسط سعر الشراء</th>
+                                                        <th>آخر شراء</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نموذج طلب شراء جديد -->
+        <div class="modal-overlay" id="purchaseOrderModal" style="display: none;">
+            <div class="modal-container modal-xl">
+                <div class="modal-header">
+                    <h3>طلب شراء جديد</h3>
+                    <button class="modal-close" onclick="closePurchaseOrderModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- سيتم ملؤه بواسطة JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- تحميل مكتبة Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/purchases.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة معرض السيارات - ERP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-car"></i>
+                    <span>CarDealer ERP</span>
+                </div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#about">عن النظام</a></li>
+                <li><a href="#contact">اتصل بنا</a></li>
+                <li class="nav-buttons">
+                    <a href="login.html" class="btn btn-outline">تسجيل الدخول</a>
+                    <a href="register.html" class="btn btn-primary">إنشاء حساب</a>
+                </li>
+            </ul>
+            
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- قسم البطل -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">نظام ERP متكامل لإدارة معرض سيارات</h1>
+                <p class="hero-subtitle">
+                    إدارة المبيعات، المخزون، المشتريات، والحسابات في نظام واحد متكامل
+                </p>
+                <div class="hero-buttons">
+                    <a href="register.html" class="btn btn-primary btn-large">
+                        <i class="fas fa-rocket"></i> ابدأ الآن مجاناً
+                    </a>
+                    <a href="#features" class="btn btn-outline btn-large">
+                        <i class="fas fa-play-circle"></i> شاهد المميزات
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="assets/images/dashboard-preview.svg" alt="Dashboard Preview" class="dashboard-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم المميزات -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">مميزات النظام المتكامل</h2>
+            <p class="section-subtitle">نظام شامل يغطي جميع احتياجات معرض السيارات</p>
+            
+            <div class="features-grid">
+                <!-- ميزة المبيعات -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 class="feature-title">إدارة المبيعات</h3>
+                    <p class="feature-desc">
+                        نظام مبيعات متكامل يدعم البيع النقدي والتمويل مع حجز المخزون التلقائي
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> إدارة طلبات البيع</li>
+                        <li><i class="fas fa-check"></i> عقود التمويل البنكي</li>
+                        <li><i class="fas fa-check"></i> الفواتير الإلكترونية</li>
+                        <li><i class="fas fa-check"></i> متابعة العملاء</li>
+                    </ul>
+                </div>
+
+                <!-- ميزة المخزون -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <h3 class="feature-title">إدارة المخزون</h3>
+                    <p class="feature-desc">
+                        تتبع دقيق للسيارات والاكسسوارات مع تحديث تلقائي للمخزون
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> جرد المخزون الآلي</li>
+                        <li><i class="fas fa-check"></i> تنبيهات النواقص</li>
+                        <li><i class="fas fa-check"></i> حركة المخزون</li>
+                        <li><i class="fas fa-check"></i> تقارير المخزون</li>
+                    </ul>
+                </div>
+
+                <!-- ميزة الحسابات -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 class="feature-title">النظام المحاسبي</h3>
+                    <p class="feature-desc">
+                        نظام محاسبي متكامل مع جميع القوائم المالية والدفعات
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> قوائم مالية كاملة</li>
+                        <li><i class="fas fa-check"></i> إدارة الدفعات</li>
+                        <li><i class="fas fa-check"></i> المصروفات والمشتريات</li>
+                        <li><i class="fas fa-check"></i> تقارير مالية مفصلة</li>
+                    </ul>
+                </div>
+
+                <!-- ميزة التقارير -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">التقارير والتحليلات</h3>
+                    <p class="feature-desc">
+                        تقارير شاملة ولوحات تحكم تفاعلية لاتخاذ القرارات
+                    </p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> تقارير المبيعات</li>
+                        <li><i class="fas fa-check"></i> تحليلات العملاء</li>
+                        <li><i class="fas fa-check"></i> تنبؤات المبيعات</li>
+                        <li><i class="fas fa-check"></i> لوحات تحكم تفاعلية</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- دعوة للعمل -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>جاهز لتحويل إدارة معرضك إلى نظام رقمي متكامل؟</h2>
+                <p>انضم إلى المئات من معارض السيارات التي تستخدم نظامنا</p>
+                <a href="register.html" class="btn btn-primary btn-large">
+                    <i class="fas fa-user-plus"></i> إنشاء حساب مجاني
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- التذييل -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <i class="fas fa-car"></i>
+                        <span>CarDealer ERP</span>
+                    </div>
+                    <p>نظام ERP متكامل لإدارة معارض السيارات</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul>
+                        <li><a href="login.html">تسجيل الدخول</a></li>
+                        <li><a href="register.html">إنشاء حساب</a></li>
+                        <li><a href="#features">المميزات</a></li>
+                        <li><a href="#about">عن النظام</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>تواصل معنا</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +966 55 123 4567</li>
+                        <li><i class="fas fa-envelope"></i> info@cardealer-erp.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2024 نظام إدارة معرض السيارات. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
