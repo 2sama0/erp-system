@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دفعات الموردين - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <aside class="sidebar">
+        <!-- نفس القائمة الجانبية مع تغيير العنصر النشط -->
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المشتريات</span>
+            </div>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">المشتريات والموردين</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="purchases.html">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>إدارة المشتريات</span>
+                            <span class="menu-badge">8</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchases-suppliers.html">
+                            <i class="fas fa-truck"></i>
+                            <span>إدارة الموردين</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchase-orders.html">
+                            <i class="fas fa-file-purchase"></i>
+                            <span>طلبات الشراء</span>
+                            <span class="menu-badge warning">3</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchase-invoices.html">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>فواتير المشتريات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="purchases-supplier-payments.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>دفعات الموردين</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">دفعات الموردين</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <a href="purchases.html">المشتريات</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>دفعات الموردين</span>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="page-controls">
+                <button class="btn btn-primary" onclick="openNewPaymentModal()">
+                    <i class="fas fa-plus-circle"></i>
+                    تسجيل دفعة
+                </button>
+                <div class="filter-controls">
+                    <select id="supplierFilter" class="form-control">
+                        <option value="">جميع الموردين</option>
+                    </select>
+                    <button class="btn btn-outline" onclick="applyFilter()">
+                        <i class="fas fa-filter"></i>
+                        تصفية
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>سجل الدفعات</h2>
+                    <div class="table-actions">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="paymentSearch" placeholder="بحث...">
+                        </div>
+                        <button class="btn btn-outline" onclick="exportPayments()">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table" id="paymentsTable">
+                        <thead>
+                            <tr>
+                                <th>رقم الدفعة</th>
+                                <th>المورد</th>
+                                <th>رقم الفاتورة</th>
+                                <th>التاريخ</th>
+                                <th>المبلغ</th>
+                                <th>طريقة الدفع</th>
+                                <th>الحالة</th>
+                                <th>المستخدم</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- مودال إضافة دفعة -->
+        <div class="modal-overlay" id="paymentModal" style="display: none;">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>تسجيل دفعة جديدة</h3>
+                    <button class="modal-close" onclick="closePaymentModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <label>المورد <span class="required">*</span></label>
+                            <select class="form-control" id="paymentSupplier" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الفاتورة</label>
+                            <select class="form-control" id="paymentInvoiceId">
+                                <option value="">اختر فاتورة (اختياري)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>المبلغ <span class="required">*</span></label>
+                            <input type="number" class="form-control" id="paymentAmount" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>التاريخ <span class="required">*</span></label>
+                            <input type="date" class="form-control" id="paymentDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>طريقة الدفع</label>
+                            <select class="form-control" id="paymentMethod">
+                                <option value="تحويل بنكي">تحويل بنكي</option>
+                                <option value="شيك">شيك</option>
+                                <option value="نقدي">نقدي</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" onclick="closePaymentModal()">إلغاء</button>
+                            <button type="submit" class="btn btn-primary">تسجيل</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let payments = [
+            { id: 'PAY-2024-0015', supplier: 'السيارات المتميزة', invoiceId: 'INV-2024-0015', date: '2024-01-15', amount: 330000, method: 'تحويل بنكي', status: 'completed', user: 'أحمد السليم' },
+            { id: 'PAY-2024-0014', supplier: 'وكيل السيارات', invoiceId: 'INV-2024-0013', date: '2024-01-10', amount: 360000, method: 'شيك', status: 'pending', user: 'محمد أحمد' },
+            { id: 'PAY-2024-0013', supplier: 'مورد قطع الغيار', invoiceId: 'INV-2024-0012', date: '2024-01-05', amount: 85000, method: 'نقدي', status: 'completed', user: 'فهد خالد' },
+        ];
+        let suppliersList = ['السيارات المتميزة', 'مورد الاكسسوارات', 'وكيل السيارات', 'مورد قطع الغيار'];
+        let invoicesList = ['INV-2024-0015', 'INV-2024-0014', 'INV-2024-0013'];
+        let nextPaymentId = 4;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuthStatus()) window.location.href = 'login.html';
+            updateDate();
+            initSidebar();
+            populateFilters();
+            renderPaymentsTable();
+            document.getElementById('paymentSearch').addEventListener('input', filterPayments);
+            document.getElementById('paymentForm').addEventListener('submit', savePayment);
+        });
+
+        function updateDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('ar-SA', options);
+        }
+
+        function populateFilters() {
+            const filterSelect = document.getElementById('supplierFilter');
+            filterSelect.innerHTML = '<option value="">جميع الموردين</option>';
+            suppliersList.forEach(s => {
+                filterSelect.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+            const supplierSelect = document.getElementById('paymentSupplier');
+            supplierSelect.innerHTML = '<option value="">اختر المورد</option>';
+            suppliersList.forEach(s => {
+                supplierSelect.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+            // populate invoice select dynamically based on supplier
+            document.getElementById('paymentSupplier').addEventListener('change', function() {
+                const selectedSupplier = this.value;
+                const invoiceSelect = document.getElementById('paymentInvoiceId');
+                invoiceSelect.innerHTML = '<option value="">اختر فاتورة (اختياري)</option>';
+                // Here we could filter invoices by supplier, but for demo, show all
+                invoicesList.forEach(inv => {
+                    invoiceSelect.innerHTML += `<option value="${inv}">${inv}</option>`;
+                });
+            });
+        }
+
+        function renderPaymentsTable(filtered = null) {
+            const tbody = document.querySelector('#paymentsTable tbody');
+            const data = filtered || payments;
+            tbody.innerHTML = '';
+            data.forEach(p => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${p.id}</td>
+                    <td>${p.supplier}</td>
+                    <td>${p.invoiceId || '-'}</td>
+                    <td>${p.date}</td>
+                    <td>${utils.formatCurrency(p.amount)}</td>
+                    <td>${p.method}</td>
+                    <td><span class="status-badge ${p.status}">${p.status === 'completed' ? 'مكتمل' : 'قيد المعالجة'}</span></td>
+                    <td>${p.user}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn view" onclick="viewPayment('${p.id}')"><i class="fas fa-eye"></i></button>
+                        <button class="action-btn receipt" onclick="printReceipt('${p.id}')"><i class="fas fa-receipt"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterPayments() {
+            const term = document.getElementById('paymentSearch').value.toLowerCase();
+            const supplier = document.getElementById('supplierFilter').value;
+            const filtered = payments.filter(p => {
+                const matchSearch = p.id.toLowerCase().includes(term) || p.supplier.toLowerCase().includes(term);
+                const matchSupplier = !supplier || p.supplier === supplier;
+                return matchSearch && matchSupplier;
+            });
+            renderPaymentsTable(filtered);
+        }
+
+        function applyFilter() {
+            filterPayments();
+        }
+
+        function openNewPaymentModal() {
+            document.getElementById('paymentForm').reset();
+            document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function savePayment(e) {
+            e.preventDefault();
+            const supplier = document.getElementById('paymentSupplier').value;
+            const invoiceId = document.getElementById('paymentInvoiceId').value;
+            const amount = parseFloat(document.getElementById('paymentAmount').value);
+            const date = document.getElementById('paymentDate').value;
+            const method = document.getElementById('paymentMethod').value;
+
+            if (!supplier || isNaN(amount) || amount <= 0) {
+                utils.showNotification('يرجى إدخال المورد والمبلغ', 'error');
+                return;
+            }
+
+            const newId = `PAY-${Date.now().toString().slice(-6)}`;
+            const newPayment = {
+                id: newId,
+                supplier,
+                invoiceId: invoiceId || '',
+                date,
+                amount,
+                method,
+                status: 'completed',
+                user: 'أحمد السليم' // يمكن جلبها من الجلسة
+            };
+            payments.push(newPayment);
+            utils.showNotification('تم تسجيل الدفعة بنجاح', 'success');
+            closePaymentModal();
+            renderPaymentsTable();
+        }
+
+        function viewPayment(id) {
+            utils.showNotification(`عرض تفاصيل الدفعة ${id}`, 'info');
+        }
+
+        function printReceipt(id) {
+            utils.showNotification(`طباعة إيصال الدفعة ${id}`, 'info');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        function exportPayments() {
+            utils.showNotification('جاري تصدير الدفعات...', 'info');
+        }
+    </script>
+</body>
+</html>

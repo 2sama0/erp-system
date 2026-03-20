@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الموردين - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* إضافات خاصة بإدارة الموردين */
+        .supplier-avatar {
+            width: 60px;
+            height: 60px;
+            background: #007bff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin: 0 auto 15px;
+        }
+        .supplier-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
+            border: 1px solid #dee2e6;
+        }
+        .supplier-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        .supplier-info {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .supplier-info h4 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        .supplier-info p {
+            margin: 5px 0;
+            color: #6c757d;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .supplier-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .supplier-stats .stat {
+            text-align: center;
+        }
+        .stat-label {
+            display: block;
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .supplier-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .search-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .suppliers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .suppliers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="dashboard-page">
+    <!-- القائمة الجانبية (نفس هيكل الصفحة الرئيسية) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المشتريات</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">المشتريات والموردين</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="purchases.html">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>إدارة المشتريات</span>
+                            <span class="menu-badge">8</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="purchases-suppliers.html">
+                            <i class="fas fa-truck"></i>
+                            <span>إدارة الموردين</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchase-orders.html">
+                            <i class="fas fa-file-purchase"></i>
+                            <span>طلبات الشراء</span>
+                            <span class="menu-badge warning">3</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchase-invoices.html">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>فواتير المشتريات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchases-supplier-payments.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>دفعات الموردين</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">إدارة الموردين</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <a href="purchases.html">المشتريات</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>الموردين</span>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="page-controls">
+                <button class="btn btn-primary" onclick="openAddSupplierModal()">
+                    <i class="fas fa-plus-circle"></i>
+                    مورد جديد
+                </button>
+                <div class="search-box" style="flex:1;">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="supplierSearch" placeholder="بحث عن مورد...">
+                </div>
+                <button class="btn btn-outline" onclick="exportSuppliers()">
+                    <i class="fas fa-download"></i>
+                    تصدير
+                </button>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#3498db;">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">إجمالي الموردين</span>
+                        <span class="stat-value" id="totalSuppliers">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#2ecc71;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">موردين نشطين</span>
+                        <span class="stat-value" id="activeSuppliers">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#f39c12;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">إجمالي المشتريات</span>
+                        <span class="stat-value" id="totalPurchases">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="suppliersContainer" class="suppliers-grid">
+                <!-- سيتم تعبئة البطاقات عبر JS -->
+            </div>
+        </div>
+
+        <!-- مودال إضافة/تعديل مورد -->
+        <div class="modal-overlay" id="supplierModal" style="display: none;">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 id="modalTitle">إضافة مورد جديد</h3>
+                    <button class="modal-close" onclick="closeSupplierModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="supplierForm">
+                        <input type="hidden" id="supplierId">
+                        <div class="form-group">
+                            <label>اسم المورد <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="supplierName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الهاتف</label>
+                            <input type="text" class="form-control" id="supplierPhone">
+                        </div>
+                        <div class="form-group">
+                            <label>البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="supplierEmail">
+                        </div>
+                        <div class="form-group">
+                            <label>العنوان</label>
+                            <textarea class="form-control" id="supplierAddress" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>الحالة</label>
+                            <select class="form-control" id="supplierStatus">
+                                <option value="active">نشط</option>
+                                <option value="inactive">غير نشط</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" onclick="closeSupplierModal()">إلغاء</button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // بيانات تجريبية للموردين
+        let suppliers = [
+            { id: 1, name: 'السيارات المتميزة', phone: '0501234567', email: 'info@exclusivecars.com', address: 'الرياض، طريق الملك فهد', status: 'active', totalPurchases: 660000 },
+            { id: 2, name: 'مورد الاكسسوارات', phone: '0559876543', email: 'sales@accessories.com', address: 'جدة، شارع الأمير سلطان', status: 'active', totalPurchases: 100000 },
+            { id: 3, name: 'وكيل السيارات', phone: '0561112223', email: 'info@cardealer.com', address: 'الدمام، طريق الخليج', status: 'active', totalPurchases: 360000 },
+            { id: 4, name: 'مورد قطع الغيار', phone: '0543334445', email: 'spareparts@parts.com', address: 'الرياض، الصناعية القديمة', status: 'inactive', totalPurchases: 85000 },
+        ];
+
+        let nextId = 5;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuthStatus()) window.location.href = 'login.html';
+            updateDate();
+            initSidebar();
+            renderSuppliers();
+            updateStats();
+            document.getElementById('supplierSearch').addEventListener('input', filterSuppliers);
+            document.getElementById('supplierForm').addEventListener('submit', saveSupplier);
+        });
+
+        function updateDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('ar-SA', options);
+        }
+
+        function renderSuppliers(filtered = null) {
+            const container = document.getElementById('suppliersContainer');
+            const data = filtered || suppliers;
+            container.innerHTML = '';
+            data.forEach(supplier => {
+                const card = document.createElement('div');
+                card.className = 'supplier-card';
+                card.innerHTML = `
+                    <div class="supplier-avatar">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="supplier-info">
+                        <h4>${supplier.name}</h4>
+                        <p><i class="fas fa-phone"></i> ${supplier.phone || 'غير متوفر'}</p>
+                        <p><i class="fas fa-envelope"></i> ${supplier.email || 'غير متوفر'}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> ${supplier.address || 'غير متوفر'}</p>
+                    </div>
+                    <div class="supplier-stats">
+                        <div class="stat">
+                            <span class="stat-label">إجمالي المشتريات</span>
+                            <span class="stat-value">${utils.formatCurrency(supplier.totalPurchases)}</span>
+                        </div>
+                    </div>
+                    <div class="supplier-actions">
+                        <button class="action-btn edit" onclick="editSupplier(${supplier.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete" onclick="deleteSupplier(${supplier.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterSuppliers() {
+            const term = document.getElementById('supplierSearch').value.toLowerCase();
+            const filtered = suppliers.filter(s => s.name.toLowerCase().includes(term));
+            renderSuppliers(filtered);
+        }
+
+        function updateStats() {
+            document.getElementById('totalSuppliers').textContent = suppliers.length;
+            document.getElementById('activeSuppliers').textContent = suppliers.filter(s => s.status === 'active').length;
+            const total = suppliers.reduce((sum, s) => sum + s.totalPurchases, 0);
+            document.getElementById('totalPurchases').textContent = utils.formatCurrency(total);
+        }
+
+        function openAddSupplierModal() {
+            document.getElementById('modalTitle').textContent = 'إضافة مورد جديد';
+            document.getElementById('supplierForm').reset();
+            document.getElementById('supplierId').value = '';
+            document.getElementById('supplierModal').style.display = 'flex';
+        }
+
+        function editSupplier(id) {
+            const supplier = suppliers.find(s => s.id === id);
+            if (!supplier) return;
+            document.getElementById('modalTitle').textContent = 'تعديل المورد';
+            document.getElementById('supplierId').value = supplier.id;
+            document.getElementById('supplierName').value = supplier.name;
+            document.getElementById('supplierPhone').value = supplier.phone || '';
+            document.getElementById('supplierEmail').value = supplier.email || '';
+            document.getElementById('supplierAddress').value = supplier.address || '';
+            document.getElementById('supplierStatus').value = supplier.status;
+            document.getElementById('supplierModal').style.display = 'flex';
+        }
+
+        function saveSupplier(e) {
+            e.preventDefault();
+            const id = document.getElementById('supplierId').value;
+            const name = document.getElementById('supplierName').value.trim();
+            const phone = document.getElementById('supplierPhone').value.trim();
+            const email = document.getElementById('supplierEmail').value.trim();
+            const address = document.getElementById('supplierAddress').value.trim();
+            const status = document.getElementById('supplierStatus').value;
+
+            if (!name) return utils.showNotification('يرجى إدخال اسم المورد', 'error');
+
+            if (id) {
+                // تعديل
+                const index = suppliers.findIndex(s => s.id == id);
+                if (index !== -1) {
+                    suppliers[index] = { ...suppliers[index], name, phone, email, address, status };
+                }
+                utils.showNotification('تم تحديث المورد بنجاح', 'success');
+            } else {
+                // إضافة جديد
+                const newId = nextId++;
+                suppliers.push({
+                    id: newId,
+                    name,
+                    phone,
+                    email,
+                    address,
+                    status,
+                    totalPurchases: 0
+                });
+                utils.showNotification('تم إضافة المورد بنجاح', 'success');
+            }
+            closeSupplierModal();
+            renderSuppliers();
+            updateStats();
+        }
+
+        function deleteSupplier(id) {
+            if (confirm('هل أنت متأكد من حذف هذا المورد؟')) {
+                suppliers = suppliers.filter(s => s.id !== id);
+                renderSuppliers();
+                updateStats();
+                utils.showNotification('تم حذف المورد', 'success');
+            }
+        }
+
+        function closeSupplierModal() {
+            document.getElementById('supplierModal').style.display = 'none';
+        }
+
+        function exportSuppliers() {
+            // تصدير البيانات (يمكن توسيعه لتصدير CSV)
+            utils.showNotification('جاري تصدير بيانات الموردين...', 'info');
+        }
+    </script>
+</body>
+</html>

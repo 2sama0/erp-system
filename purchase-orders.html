@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلبات الشراء - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <aside class="sidebar">
+        <!-- نفس القائمة الجانبية مع تغيير العنصر النشط -->
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المشتريات</span>
+            </div>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">المشتريات والموردين</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="purchases.html">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>إدارة المشتريات</span>
+                            <span class="menu-badge">8</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchases-suppliers.html">
+                            <i class="fas fa-truck"></i>
+                            <span>إدارة الموردين</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="purchase-orders.html">
+                            <i class="fas fa-file-purchase"></i>
+                            <span>طلبات الشراء</span>
+                            <span class="menu-badge warning">3</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchase-invoices.html">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>فواتير المشتريات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchases-supplier-payments.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>دفعات الموردين</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">طلبات الشراء</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <a href="purchases.html">المشتريات</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>طلبات الشراء</span>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="page-controls">
+                <button class="btn btn-primary" onclick="openNewOrderModal()">
+                    <i class="fas fa-plus-circle"></i>
+                    طلب شراء جديد
+                </button>
+                <div class="filter-controls">
+                    <select id="supplierFilter" class="form-control">
+                        <option value="">جميع الموردين</option>
+                    </select>
+                    <select id="statusFilter" class="form-control">
+                        <option value="">جميع الحالات</option>
+                        <option value="pending">معلق</option>
+                        <option value="ordered">تم الطلب</option>
+                        <option value="received">تم الاستلام</option>
+                        <option value="cancelled">ملغي</option>
+                    </select>
+                    <button class="btn btn-outline" onclick="applyFilters()">
+                        <i class="fas fa-filter"></i>
+                        تصفية
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>قائمة طلبات الشراء</h2>
+                    <div class="table-actions">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="orderSearch" placeholder="بحث...">
+                        </div>
+                        <button class="btn btn-outline" onclick="exportOrders()">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table" id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>المورد</th>
+                                <th>التاريخ</th>
+                                <th>تاريخ التسليم</th>
+                                <th>المنتجات</th>
+                                <th>الإجمالي</th>
+                                <th>المدفوع</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- مودال إضافة/تعديل طلب شراء -->
+        <div class="modal-overlay" id="orderModal" style="display: none;">
+            <div class="modal-container modal-xl">
+                <div class="modal-header">
+                    <h3 id="orderModalTitle">طلب شراء جديد</h3>
+                    <button class="modal-close" onclick="closeOrderModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="orderForm">
+                        <input type="hidden" id="orderId">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>المورد <span class="required">*</span></label>
+                                    <select class="form-control" id="orderSupplier" required></select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>تاريخ الطلب</label>
+                                    <input type="date" class="form-control" id="orderDate" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>تاريخ التسليم المتوقع</label>
+                                    <input type="date" class="form-control" id="deliveryDate">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>الحالة</label>
+                                    <select class="form-control" id="orderStatus">
+                                        <option value="pending">معلق</option>
+                                        <option value="ordered">تم الطلب</option>
+                                        <option value="received">تم الاستلام</option>
+                                        <option value="cancelled">ملغي</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>المنتجات (وصف)</label>
+                            <textarea class="form-control" id="orderProducts" rows="3"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>المبلغ الإجمالي</label>
+                                    <input type="number" class="form-control" id="orderTotal" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>المبلغ المدفوع</label>
+                                    <input type="number" class="form-control" id="orderPaid" step="0.01" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" onclick="closeOrderModal()">إلغاء</button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let orders = [
+            { id: 'PO-2024-0015', supplier: 'السيارات المتميزة', date: '2024-01-15', deliveryDate: '2024-01-25', products: 'سيارة BMW X5 2024 (2), سيارة مرسيدس GLC 2024 (1)', total: 660000, paid: 330000, status: 'ordered', statusText: 'تم الطلب' },
+            { id: 'PO-2024-0014', supplier: 'مورد الاكسسوارات', date: '2024-01-14', deliveryDate: '2024-01-18', products: 'إطارات 18 بوصة (20), زيت محرك 5W-30 (50)', total: 45000, paid: 0, status: 'pending', statusText: 'معلق' },
+            { id: 'PO-2024-0013', supplier: 'وكيل السيارات', date: '2024-01-13', deliveryDate: '2024-01-20', products: 'سيارة تويوتا كامري 2024 (3)', total: 360000, paid: 360000, status: 'received', statusText: 'تم الاستلام' },
+        ];
+        let suppliersList = ['السيارات المتميزة', 'مورد الاكسسوارات', 'وكيل السيارات', 'مورد قطع الغيار'];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuthStatus()) window.location.href = 'login.html';
+            updateDate();
+            initSidebar();
+            populateSupplierFilters();
+            renderOrdersTable();
+            document.getElementById('orderSearch').addEventListener('input', filterOrders);
+            document.getElementById('orderForm').addEventListener('submit', saveOrder);
+        });
+
+        function updateDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('ar-SA', options);
+        }
+
+        function populateSupplierFilters() {
+            const filterSelect = document.getElementById('supplierFilter');
+            filterSelect.innerHTML = '<option value="">جميع الموردين</option>';
+            suppliersList.forEach(s => {
+                filterSelect.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+            const orderSupplierSelect = document.getElementById('orderSupplier');
+            orderSupplierSelect.innerHTML = '<option value="">اختر المورد</option>';
+            suppliersList.forEach(s => {
+                orderSupplierSelect.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+        }
+
+        function renderOrdersTable(filteredOrders = null) {
+            const tbody = document.querySelector('#ordersTable tbody');
+            const data = filteredOrders || orders;
+            tbody.innerHTML = '';
+            data.forEach(order => {
+                const statusClass = order.status;
+                const statusText = order.status === 'pending' ? 'معلق' : (order.status === 'ordered' ? 'تم الطلب' : (order.status === 'received' ? 'تم الاستلام' : 'ملغي'));
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.supplier}</td>
+                    <td>${order.date}</td>
+                    <td>${order.deliveryDate || '-'}</td>
+                    <td>${order.products}</td>
+                    <td>${utils.formatCurrency(order.total)}</td>
+                    <td>${utils.formatCurrency(order.paid)}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit" onclick="editOrder('${order.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteOrder('${order.id}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterOrders() {
+            const search = document.getElementById('orderSearch').value.toLowerCase();
+            const supplier = document.getElementById('supplierFilter').value;
+            const status = document.getElementById('statusFilter').value;
+            const filtered = orders.filter(o => {
+                const matchSearch = o.id.toLowerCase().includes(search) || o.supplier.toLowerCase().includes(search);
+                const matchSupplier = !supplier || o.supplier === supplier;
+                const matchStatus = !status || o.status === status;
+                return matchSearch && matchSupplier && matchStatus;
+            });
+            renderOrdersTable(filtered);
+        }
+
+        function applyFilters() {
+            filterOrders();
+        }
+
+        function openNewOrderModal() {
+            document.getElementById('orderModalTitle').textContent = 'طلب شراء جديد';
+            document.getElementById('orderForm').reset();
+            document.getElementById('orderId').value = '';
+            document.getElementById('orderDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function editOrder(id) {
+            const order = orders.find(o => o.id === id);
+            if (!order) return;
+            document.getElementById('orderModalTitle').textContent = 'تعديل طلب شراء';
+            document.getElementById('orderId').value = order.id;
+            document.getElementById('orderSupplier').value = order.supplier;
+            document.getElementById('orderDate').value = order.date;
+            document.getElementById('deliveryDate').value = order.deliveryDate || '';
+            document.getElementById('orderStatus').value = order.status;
+            document.getElementById('orderProducts').value = order.products;
+            document.getElementById('orderTotal').value = order.total;
+            document.getElementById('orderPaid').value = order.paid;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function saveOrder(e) {
+            e.preventDefault();
+            const id = document.getElementById('orderId').value;
+            const supplier = document.getElementById('orderSupplier').value;
+            const date = document.getElementById('orderDate').value;
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            const status = document.getElementById('orderStatus').value;
+            const products = document.getElementById('orderProducts').value;
+            const total = parseFloat(document.getElementById('orderTotal').value);
+            const paid = parseFloat(document.getElementById('orderPaid').value);
+
+            if (!supplier || !date || isNaN(total)) {
+                utils.showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+                return;
+            }
+
+            const statusText = status === 'pending' ? 'معلق' : (status === 'ordered' ? 'تم الطلب' : (status === 'received' ? 'تم الاستلام' : 'ملغي'));
+
+            if (id) {
+                // تعديل
+                const index = orders.findIndex(o => o.id === id);
+                if (index !== -1) {
+                    orders[index] = { ...orders[index], supplier, date, deliveryDate, status, statusText, products, total, paid };
+                }
+                utils.showNotification('تم تحديث الطلب بنجاح', 'success');
+            } else {
+                // إضافة جديد
+                const newId = `PO-${Date.now().toString().slice(-6)}`;
+                orders.push({
+                    id: newId, supplier, date, deliveryDate, status, statusText, products, total, paid
+                });
+                utils.showNotification('تم إضافة طلب الشراء', 'success');
+            }
+            closeOrderModal();
+            renderOrdersTable();
+        }
+
+        function deleteOrder(id) {
+            if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) {
+                orders = orders.filter(o => o.id !== id);
+                renderOrdersTable();
+                utils.showNotification('تم حذف الطلب', 'success');
+            }
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function exportOrders() {
+            utils.showNotification('جاري تصدير طلبات الشراء...', 'info');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فواتير المشتريات - نظام إدارة معرض السيارات</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <aside class="sidebar">
+        <!-- نفس القائمة الجانبية مع تغيير العنصر النشط -->
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text">
+                    <h2>CarDealer</h2>
+                    <span>ERP System</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar">
+                <img src="assets/images/user-avatar.png" alt="صورة المستخدم">
+                <span class="user-status online"></span>
+            </div>
+            <div class="user-info">
+                <h3 id="userName">أحمد السليم</h3>
+                <span class="user-role" id="userRole">مدير المشتريات</span>
+            </div>
+        </div>
+        <nav class="sidebar-menu">
+            <div class="menu-section">
+                <h4 class="section-title">المشتريات والموردين</h4>
+                <ul>
+                    <li class="menu-item">
+                        <a href="purchases.html">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>إدارة المشتريات</span>
+                            <span class="menu-badge">8</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchases-suppliers.html">
+                            <i class="fas fa-truck"></i>
+                            <span>إدارة الموردين</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchase-orders.html">
+                            <i class="fas fa-file-purchase"></i>
+                            <span>طلبات الشراء</span>
+                            <span class="menu-badge warning">3</span>
+                        </a>
+                    </li>
+                    <li class="menu-item active">
+                        <a href="purchase-invoices.html">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>فواتير المشتريات</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="purchases-supplier-payments.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>دفعات الموردين</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1 class="page-title">فواتير المشتريات</h1>
+                <nav class="breadcrumb">
+                    <a href="dashboard.html">الرئيسية</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <a href="purchases.html">المشتريات</a>
+                    <i class="fas fa-chevron-left"></i>
+                    <span>فواتير المشتريات</span>
+                </nav>
+            </div>
+            <div class="topbar-right">
+                <div class="date-time">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="page-controls">
+                <button class="btn btn-primary" onclick="openNewInvoiceModal()">
+                    <i class="fas fa-plus-circle"></i>
+                    فاتورة جديدة
+                </button>
+                <button class="btn btn-outline" onclick="filterUnpaid()">
+                    <i class="fas fa-exclamation-circle"></i>
+                    الفواتير غير المدفوعة
+                </button>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#ffc107;">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">إجمالي الفواتير</span>
+                        <span class="stat-value" id="totalInvoices">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#28a745;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">مدفوعة</span>
+                        <span class="stat-value" id="paidInvoices">0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:#dc3545;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-title">المبالغ المستحقة</span>
+                        <span class="stat-value" id="totalOutstanding">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2>قائمة الفواتير</h2>
+                    <div class="table-actions">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="invoiceSearch" placeholder="بحث...">
+                        </div>
+                        <button class="btn btn-outline" onclick="exportInvoices()">
+                            <i class="fas fa-download"></i>
+                            تصدير
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table" id="invoicesTable">
+                        <thead>
+                            <tr>
+                                <th>رقم الفاتورة</th>
+                                <th>المورد</th>
+                                <th>تاريخ الفاتورة</th>
+                                <th>تاريخ الاستحقاق</th>
+                                <th>الإجمالي</th>
+                                <th>المدفوع</th>
+                                <th>المتبقي</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- مودال إضافة/تعديل فاتورة -->
+        <div class="modal-overlay" id="invoiceModal" style="display: none;">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 id="invoiceModalTitle">فاتورة جديدة</h3>
+                    <button class="modal-close" onclick="closeInvoiceModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="invoiceForm">
+                        <input type="hidden" id="invoiceId">
+                        <div class="form-group">
+                            <label>المورد <span class="required">*</span></label>
+                            <select class="form-control" id="invoiceSupplier" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>تاريخ الفاتورة</label>
+                            <input type="date" class="form-control" id="invoiceDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>تاريخ الاستحقاق</label>
+                            <input type="date" class="form-control" id="dueDate">
+                        </div>
+                        <div class="form-group">
+                            <label>المبلغ الإجمالي</label>
+                            <input type="number" class="form-control" id="invoiceTotal" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>المبلغ المدفوع</label>
+                            <input type="number" class="form-control" id="invoicePaid" step="0.01" value="0">
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" onclick="closeInvoiceModal()">إلغاء</button>
+                            <button type="submit" class="btn btn-primary">حفظ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- مودال تسديد الفاتورة -->
+        <div class="modal-overlay" id="paymentModal" style="display: none;">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>تسديد فاتورة</h3>
+                    <button class="modal-close" onclick="closePaymentModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="paymentForm">
+                        <input type="hidden" id="paymentInvoiceId">
+                        <div class="form-group">
+                            <label>المبلغ المطلوب تسديده</label>
+                            <input type="number" class="form-control" id="paymentAmount" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>تاريخ الدفع</label>
+                            <input type="date" class="form-control" id="paymentDate" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-outline" onclick="closePaymentModal()">إلغاء</button>
+                            <button type="submit" class="btn btn-primary">تسجيل الدفع</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let invoices = [
+            { id: 'INV-2024-0015', supplier: 'السيارات المتميزة', invoiceDate: '2024-01-15', dueDate: '2024-02-14', total: 660000, paid: 330000, status: 'partial' },
+            { id: 'INV-2024-0014', supplier: 'مورد الاكسسوارات', invoiceDate: '2024-01-10', dueDate: '2024-02-09', total: 45000, paid: 0, status: 'unpaid' },
+            { id: 'INV-2024-0013', supplier: 'وكيل السيارات', invoiceDate: '2024-01-05', dueDate: '2024-02-04', total: 360000, paid: 360000, status: 'paid' },
+        ];
+        let suppliersList = ['السيارات المتميزة', 'مورد الاكسسوارات', 'وكيل السيارات', 'مورد قطع الغيار'];
+        let nextInvoiceId = 4;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuthStatus()) window.location.href = 'login.html';
+            updateDate();
+            initSidebar();
+            populateSupplierSelect();
+            renderInvoicesTable();
+            updateStats();
+            document.getElementById('invoiceSearch').addEventListener('input', filterInvoices);
+            document.getElementById('invoiceForm').addEventListener('submit', saveInvoice);
+            document.getElementById('paymentForm').addEventListener('submit', recordPayment);
+        });
+
+        function updateDate() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('ar-SA', options);
+        }
+
+        function populateSupplierSelect() {
+            const select = document.getElementById('invoiceSupplier');
+            select.innerHTML = '<option value="">اختر المورد</option>';
+            suppliersList.forEach(s => {
+                select.innerHTML += `<option value="${s}">${s}</option>`;
+            });
+        }
+
+        function renderInvoicesTable(filtered = null) {
+            const tbody = document.querySelector('#invoicesTable tbody');
+            const data = filtered || invoices;
+            tbody.innerHTML = '';
+            data.forEach(inv => {
+                const remaining = inv.total - inv.paid;
+                let statusText = '', statusClass = '';
+                if (inv.status === 'paid') { statusText = 'مدفوعة'; statusClass = 'completed'; }
+                else if (inv.status === 'partial') { statusText = 'مدفوعة جزئياً'; statusClass = 'warning'; }
+                else { statusText = 'غير مدفوعة'; statusClass = 'danger'; }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${inv.id}</td>
+                    <td>${inv.supplier}</td>
+                    <td>${inv.invoiceDate}</td>
+                    <td>${inv.dueDate || '-'}</td>
+                    <td>${utils.formatCurrency(inv.total)}</td>
+                    <td>${utils.formatCurrency(inv.paid)}</td>
+                    <td>${utils.formatCurrency(remaining)}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="action-buttons">
+                        <button class="action-btn edit" onclick="editInvoice('${inv.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" onclick="deleteInvoice('${inv.id}')"><i class="fas fa-trash"></i></button>
+                        ${remaining > 0 ? `<button class="action-btn pay" onclick="openPaymentModal('${inv.id}')"><i class="fas fa-money-bill-wave"></i></button>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterInvoices() {
+            const term = document.getElementById('invoiceSearch').value.toLowerCase();
+            const filtered = invoices.filter(i => i.id.toLowerCase().includes(term) || i.supplier.toLowerCase().includes(term));
+            renderInvoicesTable(filtered);
+        }
+
+        function filterUnpaid() {
+            const unpaid = invoices.filter(i => i.status !== 'paid');
+            renderInvoicesTable(unpaid);
+        }
+
+        function updateStats() {
+            document.getElementById('totalInvoices').textContent = invoices.length;
+            document.getElementById('paidInvoices').textContent = invoices.filter(i => i.status === 'paid').length;
+            const outstanding = invoices.reduce((sum, i) => sum + (i.total - i.paid), 0);
+            document.getElementById('totalOutstanding').textContent = utils.formatCurrency(outstanding);
+        }
+
+        function openNewInvoiceModal() {
+            document.getElementById('invoiceModalTitle').textContent = 'فاتورة جديدة';
+            document.getElementById('invoiceForm').reset();
+            document.getElementById('invoiceId').value = '';
+            document.getElementById('invoiceDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('invoiceModal').style.display = 'flex';
+        }
+
+        function editInvoice(id) {
+            const inv = invoices.find(i => i.id === id);
+            if (!inv) return;
+            document.getElementById('invoiceModalTitle').textContent = 'تعديل الفاتورة';
+            document.getElementById('invoiceId').value = inv.id;
+            document.getElementById('invoiceSupplier').value = inv.supplier;
+            document.getElementById('invoiceDate').value = inv.invoiceDate;
+            document.getElementById('dueDate').value = inv.dueDate || '';
+            document.getElementById('invoiceTotal').value = inv.total;
+            document.getElementById('invoicePaid').value = inv.paid;
+            document.getElementById('invoiceModal').style.display = 'flex';
+        }
+
+        function saveInvoice(e) {
+            e.preventDefault();
+            const id = document.getElementById('invoiceId').value;
+            const supplier = document.getElementById('invoiceSupplier').value;
+            const invoiceDate = document.getElementById('invoiceDate').value;
+            const dueDate = document.getElementById('dueDate').value;
+            const total = parseFloat(document.getElementById('invoiceTotal').value);
+            const paid = parseFloat(document.getElementById('invoicePaid').value);
+
+            if (!supplier || !invoiceDate || isNaN(total)) {
+                utils.showNotification('يرجى ملء الحقول المطلوبة', 'error');
+                return;
+            }
+
+            const status = paid >= total ? 'paid' : (paid > 0 ? 'partial' : 'unpaid');
+
+            if (id) {
+                const index = invoices.findIndex(i => i.id === id);
+                if (index !== -1) {
+                    invoices[index] = { ...invoices[index], supplier, invoiceDate, dueDate, total, paid, status };
+                }
+                utils.showNotification('تم تحديث الفاتورة', 'success');
+            } else {
+                const newId = `INV-${Date.now().toString().slice(-6)}`;
+                invoices.push({ id: newId, supplier, invoiceDate, dueDate, total, paid, status });
+                utils.showNotification('تم إضافة الفاتورة', 'success');
+            }
+            closeInvoiceModal();
+            renderInvoicesTable();
+            updateStats();
+        }
+
+        function deleteInvoice(id) {
+            if (confirm('هل أنت متأكد من حذف هذه الفاتورة؟')) {
+                invoices = invoices.filter(i => i.id !== id);
+                renderInvoicesTable();
+                updateStats();
+                utils.showNotification('تم حذف الفاتورة', 'success');
+            }
+        }
+
+        function openPaymentModal(invoiceId) {
+            const inv = invoices.find(i => i.id === invoiceId);
+            if (!inv) return;
+            document.getElementById('paymentInvoiceId').value = invoiceId;
+            document.getElementById('paymentAmount').value = inv.total - inv.paid;
+            document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function recordPayment(e) {
+            e.preventDefault();
+            const invoiceId = document.getElementById('paymentInvoiceId').value;
+            const amount = parseFloat(document.getElementById('paymentAmount').value);
+            const paymentDate = document.getElementById('paymentDate').value;
+            const inv = invoices.find(i => i.id === invoiceId);
+            if (!inv || isNaN(amount) || amount <= 0) return;
+            const newPaid = inv.paid + amount;
+            if (newPaid > inv.total) {
+                utils.showNotification('المبلغ أكبر من المتبقي', 'error');
+                return;
+            }
+            inv.paid = newPaid;
+            inv.status = newPaid >= inv.total ? 'paid' : (newPaid > 0 ? 'partial' : 'unpaid');
+            // هنا يمكن إضافة تسجيل الدفعة في نظام الدفعات
+            utils.showNotification(`تم تسجيل دفعة بقيمة ${utils.formatCurrency(amount)}`, 'success');
+            closePaymentModal();
+            renderInvoicesTable();
+            updateStats();
+        }
+
+        function closeInvoiceModal() {
+            document.getElementById('invoiceModal').style.display = 'none';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        function exportInvoices() {
+            utils.showNotification('جاري تصدير الفواتير...', 'info');
+        }
+    </script>
+</body>
+</html>
